@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
 
     <UseWPF>true</UseWPF>
-    <StartupObject>FIFAScripts.MVVM.App</StartupObject>
-    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+    <StartupObject>FIFAScripts.MVVM.App</StartupObject>    
+    <PackageIcon>Icon.png</PackageIcon>
   </PropertyGroup>
 
   <!--
@@ -34,6 +34,7 @@
     <None Remove="Data\FifaLibrary19.dll" />
     <None Remove="Data\fifa_ng_db-meta.XML" />
     <None Remove="Data\fifa_ng_db.DB" />
+    <None Remove="Icon.png" />
     <Content Include="Data\FifaControls.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -46,7 +47,6 @@
     <Content Include="Data\fifa_ng_db.DB">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\AppIcon.ico" />
     <Page Include="App.xaml" />
   </ItemGroup>
 
@@ -66,5 +66,16 @@
     <Reference Include="FifaLibrary19">
       <HintPath>Data\FifaLibrary19.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>

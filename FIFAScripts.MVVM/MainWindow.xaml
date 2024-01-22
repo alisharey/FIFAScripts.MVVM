@@ -11,7 +11,7 @@
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Style="{StaticResource MaterialDesignWindow}"
         Title="Demo App" Height="584" Width="719"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Icon="Resources/Icon.png">
   <Grid x:Name="WindowGrid">
 
     <Grid x:Name="MenuGrid" Height="60" VerticalAlignment="Top" Background="#FF25012B">
@@ -88,7 +88,7 @@
     <materialDesign:Snackbar      
       Grid.Row="1"                           
       Grid.ColumnSpan="2"
-      MessageQueue="{materialDesign:MessageQueue}"
+      MessageQueue="{Binding MessageQueue}"
       x:Name="StatusSnackBar"
       HorizontalAlignment="Stretch" Background="#FF25012B" Foreground="#FFFFF5F5"                              
       ActionButtonStyle="{DynamicResource MaterialDesignFlatLightButton}"  

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Policy;
 using System.Windows.Controls;
@@ -15,16 +16,20 @@ using FIFAScripts.MVVM.Enums;
 using FIFAScripts.MVVM.Messages;
 using FIFAScripts.MVVM.ViewModels;
 
+using MaterialDesignThemes.Wpf;
+
 using Microsoft.Win32;
 
 namespace FIFAScripts.MVVM;
 
-public partial class MainWindowViewModel : ObservableRecipient
+public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUpMessage>
 {
 
     [ObservableProperty]
     private int _selectedTabIndex;
 
+    [ObservableProperty]
+    private SnackbarMessageQueue _messageQueue = new();
     
 
 
@@ -71,12 +76,11 @@ public partial class MainWindowViewModel : ObservableRecipient
         await Task.Run(() => Messenger.Send(new ExportMessage()));
     }
 
-
-
-
-
-
-
-
-
+    void IRecipient<PopUpMessage>.Receive(PopUpMessage message)
+    {
+        MessageQueue.Enqueue(message.Message,
+               "OK",
+               param => Trace.WriteLine("Actioned: " + param),
+               message.Message);
+    }
 }

@@ -52,7 +52,8 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     [RelayCommand]
     private async Task ImportCareerToSquadAsync()
-    {
+    {       
+
         await Task.Run(() => _careerSaveFile = new CareerSaveFile(OpenFile("Select a career file.")));
 
         if (_careerSaveFile != null)
@@ -63,12 +64,18 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
         await Task.Run(() =>
         {
-            SquadSaveFile = new EASaveFile(OpenFile("Select a target squad file."));
+            do
+            {
+                PopUpMessage("Select a target squad file.");
+                SquadSaveFile = new EASaveFile(OpenFile("squad file"));
+            }
+            while (SquadSaveFile?.Type != FileType.Squad);
+            
 
         });
 
         SquadSaveFile?.ImportDataSet(CareerInfo?.MainDataSet ?? new System.Data.DataSet());
-        SquadSaveFile?.GetPlayerStats("188545");
+        
 
 
     }
@@ -83,19 +90,18 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
             int statValue = 0;
             int.TryParse(StatValue, out statValue);
 
-            string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault
-            (x => x.Value == (string?)SelectedPlayer).Key ?? "";
+            string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault(x => x.Value == (string?)SelectedPlayer).Key ?? "";
 
 
             if (statValue >= 1 && statValue <= 99 && !string.IsNullOrEmpty(playerID))
             {
                 SquadSaveFile?.SetPlayerStat(playerID, SelectedStat, statValue);
                 OnSelectedPlayerChanged(SelectedPlayer);
+                PopUpMessage($"{SelectedPlayer}'s {SelectedStat} set to {statValue}");
             }
-
             else
             {
-                // ignore for now -- invalid stat value
+                PopUpMessage("Invalid stat value. Write a value between 1-99");
             }
 
 
@@ -163,10 +169,18 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     void IRecipient<SaveFileMessage>.Receive(SaveFileMessage message)
     {
         SquadSaveFile?.Save();
+        PopUpMessage("File Saved");
     }
 
     void IRecipient<ExportMessage>.Receive(ExportMessage message)
     {
         SquadSaveFile?.ExportToXL();
+        PopUpMessage("File Exported");
+        
+    }
+
+    private void PopUpMessage(string message)
+    {
+        Messenger.Send(new PopUpMessage(message));
     }
 }

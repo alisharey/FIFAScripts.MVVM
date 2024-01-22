@@ -99,17 +99,7 @@ namespace FIFAScripts.MVVM.Models
             return careerInfo;
         }
 
-        public static CareerInfo ExportCareerInfo(CareerSaveFile csf, string temp)
-        {
-
-            var careerInfo = new CareerInfo(
-                csf.GetMainDataSet(),
-                string.Empty,
-                new List<string>(),
-                new Dictionary<string, string>());
-
-            return careerInfo;
-        }
+        
 
         //public void setplayerstats(string playerid, string stat, int value = 99)
         //{
