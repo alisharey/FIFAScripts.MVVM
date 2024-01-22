@@ -12,12 +12,12 @@ namespace FIFAScripts.MVVM.Models
         public string MyTeamID { get; private set; }
         public DataSet MainDataSet { get; private set; }
         public List<string> MyTeamPlayerIDs { get; private set; }
-        public Dictionary<string, string> MyTeamPlayerNamesDict { get; private set; }
+        public Dictionary<string, string> MyTeamPlayersIDtoName { get; private set; }
         public CareerInfo(DataSet MainDataSet, string MyTeamID, List<string> MyTeamPLayerIDs, Dictionary<string, string> MyTeamPLayerNamesToID)
         {
             this.MyTeamID = MyTeamID;
             this.MyTeamPlayerIDs = MyTeamPLayerIDs;
-            this.MyTeamPlayerNamesDict = MyTeamPLayerNamesToID;
+            this.MyTeamPlayersIDtoName = MyTeamPLayerNamesToID;
             this.MainDataSet = MainDataSet;
         }
     }

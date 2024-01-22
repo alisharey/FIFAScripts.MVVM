@@ -127,25 +127,31 @@
       <Grid x:Name="Selection" Margin="15,15,15,0">
 
         <ComboBox x:Name="playerComboBox" Grid.Column="0"
-                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                  materialDesign:TextFieldAssist.HasClearButton="True"
-                  materialDesign:TextFieldAssist.SuffixText=""
-                  materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueDarkBrush}"                                
-                  materialDesign:ColorZoneAssist.Mode="Light"
-                  materialDesign:HintAssist.Hint="Player"
-                  materialDesign:HintAssist.HelperText="Select one Player"
-                  MinWidth="128" Margin="114,0,0,0" BorderBrush="#FF7B1FA2" Foreground="DarkBlue" Width="150" HorizontalAlignment="Left"/>
-        <ComboBox x:Name="StatsComboBox"
-                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                  materialDesign:TextFieldAssist.HasClearButton="True"
-                  materialDesign:TextFieldAssist.SuffixText=""
-                  materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueDarkBrush}"
-                  materialDesign:ColorZoneAssist.Mode="Light"
-                  materialDesign:HintAssist.Hint="Stat"
-                  materialDesign:HintAssist.HelperText="Select one Stat"
-                  MinWidth="128" BorderBrush="#FF7B1FA2" Foreground="DarkBlue" Width="150" HorizontalAlignment="Left" Margin="286,0,0,0"/>
+          ItemsSource="{Binding CareerInfo.MyTeamPlayersIDtoName.Values}"          
+          SelectedValue="{Binding SelectedPlayer}"
+          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+          materialDesign:TextFieldAssist.HasClearButton="True"
+          materialDesign:TextFieldAssist.SuffixText=""
+          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueDarkBrush}"                                
+          materialDesign:ColorZoneAssist.Mode="Light"
+          materialDesign:HintAssist.Hint="Player"
+          materialDesign:HintAssist.HelperText="Select one Player"
+          MinWidth="128" Margin="114,0,0,0" BorderBrush="#FF7B1FA2" Foreground="DarkBlue" Width="150" HorizontalAlignment="Left"/>
+        
+        <ComboBox x:Name="StatsComboBox" ItemsSource="{Binding Stats}"
+          SelectedItem="{Binding SelectedStat}"
+          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+          materialDesign:TextFieldAssist.HasClearButton="True"
+          materialDesign:TextFieldAssist.SuffixText=""
+          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueDarkBrush}"
+          materialDesign:ColorZoneAssist.Mode="Light"
+          materialDesign:HintAssist.Hint="Stat"
+          materialDesign:HintAssist.HelperText="Select one Stat"
+          MinWidth="128" BorderBrush="#FF7B1FA2" Foreground="DarkBlue" Width="150" HorizontalAlignment="Left" Margin="286,0,0,0"/>
+
         <TextBox          
-          x:Name="ValueTextBox"                     
+          x:Name="ValueTextBox" 
+          Text="{Binding StatValue, UpdateSourceTrigger=PropertyChanged}"          
           Margin="465,0,0,0"
           PreviewTextInput="NumericOnly"
           materialDesign:HintAssist.Hint="Value"                      
@@ -157,7 +163,16 @@
           Width="100" VerticalAlignment="Center" 
           Height="50" TextWrapping="Wrap" 
           HorizontalContentAlignment="Center"
-          VerticalContentAlignment="Center"/>
+          VerticalContentAlignment="Center"
+          >
+          <TextBox.InputBindings>
+            <KeyBinding 
+            Key="Enter" 
+            Command="{Binding ChangeStatCommand}" 
+            CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}" />
+          </TextBox.InputBindings>
+
+        </TextBox>
         
         <TextBlock Grid.Column="0"
                    HorizontalAlignment="Left"

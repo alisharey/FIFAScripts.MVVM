@@ -20,11 +20,14 @@
           <MenuItem.Header>
             <TextBlock Text="File" Width="29" Margin="8,0,-14,0" FontFamily="Segoe UI" FontSize="15"/>
           </MenuItem.Header>
-          <MenuItem x:Name="SaveButton"  Header="Save"
-                     Icon="{materialDesign:PackIcon Kind=ContentSave}">
+          <MenuItem x:Name="SaveButton"  Header="Save"                    
+                    Icon="{materialDesign:PackIcon Kind=ContentSave}"
+                    Command="{Binding SaveFileCommand}">
           </MenuItem>
           <MenuItem x:Name="ExportButton"  Header="Export"
-                     Icon="{materialDesign:PackIcon Kind=Export}">
+                     Icon="{materialDesign:PackIcon Kind=Export}"
+                    Command="{Binding ExportCommand}">
+                     
           </MenuItem>
         </MenuItem>
 
@@ -39,30 +42,44 @@
     <Grid x:Name="TabsGrid" Margin="0 60 0 0">
       <Grid.Resources>
         
-        <DataTemplate DataType="{x:Type vms:CareerViewModel}">
+        <DataTemplate DataType="{x:Type vms:CareerViewModel}">          
           <views:CareerView/>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vms:SquadViewModel}">
           <views:SquadView/>          
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vms:GitHubViewModel}">
           <views:GitHubView/>
         </DataTemplate>
 
+        <DataTemplate x:Key="NormalItemTemplate">
+          <TextBlock Text="{Binding Header}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="GitHubItemTemplate" DataType="{x:Type vms:GitHubViewModel}">          
+              <materialDesign:PackIcon Kind="Github" 
+                                       Foreground="{DynamicResource PrimaryHueLightBrush}" 
+                                       Background="Transparent"/>      
+        </DataTemplate>
+
+        <local:TabItemTemplateSelector x:Key="MyTabItemTemplateSelector"
+          Normal="{StaticResource NormalItemTemplate}"
+          Github="{StaticResource GitHubItemTemplate}"/>
       </Grid.Resources>
+      
       <TabControl 
         materialDesign:ColorZoneAssist.Mode="PrimaryDark"
         Style="{StaticResource MaterialDesignFilledTabControl}"              
-        BorderBrush="#FF25012B" 
+        BorderBrush="{StaticResource PrimaryHueDarkBrush}" 
         HorizontalContentAlignment="Left" 
         RenderTransformOrigin="0.435,0.554"
-        SelectedIndex="{Binding SelectedTabIndex}"
-        ItemsSource="{Binding Tabs}">
-        <TabControl.ItemTemplate>
-          <DataTemplate>
-            <TextBlock Text="{Binding Header}" />
-          </DataTemplate>
-        </TabControl.ItemTemplate>
+        SelectedIndex="{Binding SelectedTabIndex}"        
+        ItemsSource="{Binding Tabs}" 
+        ItemTemplateSelector="{StaticResource MyTabItemTemplateSelector}"
+        >   
+        
         
 
       </TabControl>
