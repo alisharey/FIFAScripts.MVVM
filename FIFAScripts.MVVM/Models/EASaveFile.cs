@@ -31,15 +31,14 @@ namespace FIFAScripts.MVVM.Models
         public DataSet[] DataSetEa { get; }
         public FileType Type { get; }
 
-        protected readonly DataRowCollection? _playersTable;
-        protected readonly DataRowCollection? _teamplayerlinks;
+        protected readonly DataTable? _playersTable;
+        protected readonly DataTable? _teamplayerlinks;
 
         protected readonly int _indexOffset;
 
 
 
         public EASaveFile(string filename, int indexOffset = 0)
-
         {
             _indexOffset = indexOffset;
             _internalFile = filename;
@@ -70,21 +69,22 @@ namespace FIFAScripts.MVVM.Models
 
         }
 
+        protected DataTable GetPlayersTable()
+        {
+            return DataSetEa[_indexOffset].Tables["players"] ?? new DataTable();
+        }
+
+        protected DataTable GetTeamPlayerLinks()
+        {
+            return DataSetEa[_indexOffset].Tables["teamplayerlinks"] ?? new DataTable();
+
+        }
+
+
         public DataSet GetMainDataSet()
         {
             return DataSetEa[_indexOffset];
-        }
-
-        protected DataRowCollection? GetPlayersTable()
-        {
-            return DataSetEa[_indexOffset].Tables["players"]?.Rows;
-        }
-
-        protected DataRowCollection? GetTeamPlayerLinks()
-        {
-            return DataSetEa[_indexOffset].Tables["teamplayerlinks"]?.Rows;
-
-        }
+        }        
 
         public int ImportCareerInfo(CareerInfo careerInfo)
         {
@@ -118,9 +118,9 @@ namespace FIFAScripts.MVVM.Models
             Dictionary<string, string> ret = new();
             if (string.IsNullOrEmpty(playerID)) return ret;
 
-            DataRow? playerStats = DataSetEa[_indexOffset].Tables["players"]?.Select($"playerid= {playerID}").First();
+            DataRow? playerStats = _playersTable?.Select($"playerid= {playerID}").First();
 
-            foreach (string _stat in Scripts.PlayerStats)
+            foreach (string _stat in Util.PlayerStats)
             {
                 ret.Add(_stat, (playerStats?[_stat])?.ToString() ?? "0");
             }
@@ -129,11 +129,31 @@ namespace FIFAScripts.MVVM.Models
 
         }
 
-        public void SetPlayerStat(string playerID, string statName, int statValue)
+        public void SetPlayerStat(string playerID, string statName, int value = 99)
         {
-            DataRow? playerStats = DataSetEa[_indexOffset].Tables["players"]?.Select($"playerid= {playerID}").First();
-            playerStats[statName] = statValue;
+            if(_playersTable?.Select($"playerid= {playerID}").First() is { } player)
+            {
+                player[statName] = value;
+            }                
         }
+
+        public void SetPlayerStats(string playerID, int value = 99)
+        {            
+            if(_playersTable?.Select($"playerid= {playerID}").First() is { } player)
+            {
+                foreach (string _stat in Util.PlayerStats)
+                {
+                    if (_stat == "birthdate")
+                    {
+                        //player[_stat] = 154482;
+                        continue;
+                    }
+
+                    player[_stat] = value;
+                }
+            }
+        }
+
 
         public string ExportToXL()
         {

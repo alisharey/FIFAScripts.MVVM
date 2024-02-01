@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:FIFAScripts.MVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-    <TextBlock Text="{Binding URL}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <Grid>
+    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Hyperlink NavigateUri="{Binding URL}" RequestNavigate="GitHub_RequestNavigate">
+        GitHub 
+      </Hyperlink>
+    </TextBlock>
   </Grid>
 </UserControl>

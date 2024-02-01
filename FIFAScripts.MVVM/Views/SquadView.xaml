@@ -9,42 +9,102 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
 
-    <Grid x:Name="Sqaud" 
+  <Grid x:Name="Sqaud" 
         Margin="0,15,0,0"   
         materialDesign:ColorZoneAssist.Mode="PrimaryDark">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="7*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="7*"></RowDefinition>
+      <RowDefinition Height="*"></RowDefinition>
+    </Grid.RowDefinitions>
 
-        <StackPanel>
+    <StackPanel>
 
-            <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal" Margin="15,50,12,15" >
+      <StackPanel   Orientation="Horizontal" Margin="15,50,12,15" HorizontalAlignment="Center" VerticalAlignment="Top" >
 
-                <TextBlock               
+        <TextBlock               
           Style="{StaticResource MaterialDesignBody2TextBlock}"
           Foreground="#FF25012B" FontFamily="Britannic Bold" 
           VerticalAlignment="Center" Margin="0,0,15,0">
            <Run Text="Import from career"/>
-                </TextBlock>
-                <Button
+        </TextBlock>
+        <Button
           Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}" 
           Background="{StaticResource PrimaryHueDarkBrush}"
           Height="38" Width="54" Command="{Binding ImportCareerToSquadCommand}"
           ToolTip="Imports Career save to a squad file" Grid.Column="0">
 
-                    <materialDesign:PackIcon            
+          <materialDesign:PackIcon            
             Kind="Import" 
             HorizontalAlignment="Center" 
             VerticalAlignment="Center" 
             Width="30" 
             Height="30" 
             Margin="0,1,0,1"/>
+        </Button>
+        <GroupBox x:Name="SquadScriptBox" 
+          Style="{StaticResource MaterialDesignGroupBox}"                              
+          Header="Scripts" 
+          Margin="100,0,0,0"     
+          >
 
-                </Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" x:Name="Selection" Margin="15,25,15,0">
+          <StackPanel x:Name="SquadScriptsStack" >
+            
+            <Grid x:Name="SquadMyTeamAllStats" Margin="0,5,0,15">
+              
+              <TextBlock
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource MaterialDesignBody2TextBlock}"
+                Text="All player's stats to value" 
+                Foreground="#FF25012B" 
+                Margin="10,0,0,0" 
+                FontFamily="Britannic Bold"
+                />
+
+              <Button                
+                x:Name="SetPlayerStats"                               
+                Background="{StaticResource PrimaryHueDarkBrush}"
+                Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}" 
+                materialDesign:ButtonAssist.CornerRadius="5"
+                ToolTip="Sets all selected player's&#x0a;stats to value"
+                Content="Apply"  HorizontalAlignment="Right"
+                Command="{Binding ChangeStatsCommand}"
+                />                
+            </Grid>
+
+            <Grid x:Name="AgeTo15" Margin="0,0,0,15">
+              
+              <TextBlock                
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource MaterialDesignBody2TextBlock}"
+                Foreground="#FF25012B" Margin="10,0,0,0"
+                FontFamily="Britannic Bold"
+                Text="User Team Age to 17"
+                />
+              
+              <Button                
+                x:Name="SqauadScriptAgeButton"                               
+                Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}" 
+                Background="{StaticResource PrimaryHueDarkBrush}"
+                materialDesign:ButtonAssist.CornerRadius="5"                                          
+                ToolTip="Sets all your team players&#x0a;age to 15"
+                Content="Apply" 
+                HorizontalAlignment="Left" 
+                Height="32" 
+                Margin="180,0,0,0" 
+                VerticalAlignment="Top"
+                Command="{Binding ChangeAgeCommand}"
+                />              
+            </Grid>
+
+          </StackPanel>
+
+        </GroupBox>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" x:Name="Selection" Margin="15,25,15,0">
 
         <TextBlock 
           HorizontalAlignment="Center"
@@ -53,7 +113,7 @@
           Text="Edit player" 
           Foreground="#FF25012B" 
           Margin="40,10,0,0"/>
-              
+
         <ComboBox x:Name="playerComboBox" Grid.Column="0"
           ItemsSource="{Binding CareerInfo.MyTeamPlayersIDtoName.Values}"          
           SelectedValue="{Binding SelectedPlayer}"
@@ -93,73 +153,27 @@
           HorizontalContentAlignment="Center"
           VerticalContentAlignment="Center"
           >
-                    <TextBox.InputBindings>
-                        <KeyBinding 
+          <TextBox.InputBindings>
+            <KeyBinding 
             Key="Enter" 
             Command="{Binding ChangeStatCommand}" 
             CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}" />
-                    </TextBox.InputBindings>
+          </TextBox.InputBindings>
 
-                </TextBox>
-        
+        </TextBox>
+
         <ToggleButton x:Name="entireTeamCheckBox"
                       Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
                       ToolTip="Toggle to edit your entire team stats"
                       IsChecked="False" HorizontalAlignment="Right" Background="DarkBlue" Margin="30,0,0,0"/>
 
-            </StackPanel>
+      </StackPanel>
 
-            <GroupBox x:Name="SquadScriptBox" 
-                Style="{StaticResource MaterialDesignGroupBox}"                              
-                Header="Scripts" 
-                Margin="0,50
-                ,0,0" 
-                
-                HorizontalAlignment="Center">
+      
 
-                <StackPanel x:Name="SquadScriptsStack" >
-                    <Grid x:Name="SquadMyTeamAllStats" Margin="0,5,0,15">
+    </StackPanel>
 
-                        <TextBlock 
-        Grid.Column="0"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Center"
-        Style="{StaticResource MaterialDesignBody2TextBlock}"
-        Text="User Team All Stats to 99" Foreground="#FF25012B" Margin="10,0,0,0" FontFamily="Britannic Bold"/>
-
-
-                        <Button x:Name="SquadScriptOverallButton"                               
-              Background="{StaticResource PrimaryHueDarkBrush}"
-              Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}" 
-              materialDesign:ButtonAssist.CornerRadius="5"
-              ToolTip="Sets all your team players&#x0a;stats to 99"
-              Content="Apply"  HorizontalAlignment="Right" />
-                    </Grid>
-
-
-                    <Grid x:Name="AgeTo15" Margin="0,0,0,15">
-                        <TextBlock 
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Center"
-                 Style="{StaticResource MaterialDesignBody2TextBlock}"
-                 Foreground="#FF25012B" Margin="10,0,0,0"
-                 FontFamily="Britannic Bold"
-                 Text="User Team Age to 17"/>
-
-
-                        <Button x:Name="SqauadScriptAgeButton"                               
-        Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}" 
-        Background="{StaticResource PrimaryHueDarkBrush}"
-        materialDesign:ButtonAssist.CornerRadius="5"                                          
-        ToolTip="Sets all your team players&#x0a;age to 15"
-        Content="Apply" HorizontalAlignment="Left" Height="32" Margin="180,0,0,0" VerticalAlignment="Top"/>
-                    </Grid>
-                </StackPanel>
-            </GroupBox>
-
-        </StackPanel>
-
-    </Grid>
+  </Grid>
 
 
 

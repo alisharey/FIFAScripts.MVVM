@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using FIFAScripts.MVVM.ViewModels;
+
 namespace FIFAScripts.MVVM.Views
 {
     /// <summary>
@@ -23,6 +26,16 @@ namespace FIFAScripts.MVVM.Views
         public GitHubView()
         {
             InitializeComponent();
+        }
+
+        private void GitHub_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            var sInfo = new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri)
+            {
+                UseShellExecute = true,
+            };
+            System.Diagnostics.Process.Start(sInfo);
+            
         }
     }
 }

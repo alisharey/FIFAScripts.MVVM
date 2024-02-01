@@ -16,7 +16,11 @@ public partial class App : Application
     [STAThread]
     private static void Main(string[] args)
     {
-        MainAsync(args).GetAwaiter().GetResult();
+        App app = new();
+        app.InitializeComponent();
+        app.MainWindow = new MainWindow(new MainWindowViewModel());
+        app.MainWindow.Visibility = Visibility.Visible;
+        app.Run();
     }
 
     private static async Task MainAsync(string[] args)

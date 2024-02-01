@@ -9,7 +9,7 @@ using FIFAScripts.MVVM.Enums;
 
 namespace FIFAScripts.MVVM.Models
 {
-    public class Scripts
+    public class Util
     {
         
 
@@ -69,7 +69,7 @@ namespace FIFAScripts.MVVM.Models
                      "gkreflexes",
         };
 
-        public Scripts()
+        public Util()
         {            
 
         }
@@ -99,41 +99,10 @@ namespace FIFAScripts.MVVM.Models
             return careerInfo;
         }
 
+
         
 
-        //public void setplayerstats(string playerid, string stat, int value = 99)
-        //{
-        //    if (stat == "birthdate") value = 154482;
-        //    foreach (datarow _player in _playerstable)
-        //    {
 
-        //        string? _playerid = _player["playerid"].tostring();
-        //        if (_playerid == playerid) // try to merge with setteamstats in a clean way
-        //        {
-        //            if (stat == "all")
-        //            {
-        //                foreach (string _stat in playerstats)
-        //                {
-        //                    if (_stat == "birthdate")
-        //                    {
-        //                        //_player[_stat] = 154482;
-        //                        continue;
-        //                    }
-        //                    _player[_stat] = value;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                _player[stat] = value;
-        //            }
-        //        }
-
-
-        //    }
-
-        //}
-
-       
 
         //public void SetTeamStats(List<string> playerIDs, string stat, int value = 99)
         //{

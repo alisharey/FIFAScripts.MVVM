@@ -31,7 +31,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     private Dictionary<string, string> _currentPlayerStatsToValue = new();
 
     [ObservableProperty]
-    private List<string>? _stats = Scripts.PlayerStats;
+    private List<string>? _stats = Util.PlayerStats;
 
     [ObservableProperty]
     private string? _statValue;
@@ -44,10 +44,12 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     private CareerSaveFile? _careerSaveFile;
 
-    [ObservableProperty]
+    [ObservableProperty]   
     private CareerInfo? _careerInfo;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ChangeStatsCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ChangeAgeCommand))]
     private EASaveFile? _squadSaveFile;
 
     [RelayCommand]
@@ -58,7 +60,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
         if (_careerSaveFile != null)
         {
-            CareerInfo = Scripts.ExportCareerInfo(_careerSaveFile);
+            CareerInfo = Util.ExportCareerInfo(_careerSaveFile);
 
         }
 
@@ -80,6 +82,14 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     }
 
+
+
+    private string GetSelectedPlayerID()
+    {
+        return CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault(x => x.Value == (string?)SelectedPlayer).Key ?? "";
+       
+    }
+    
     [RelayCommand]
     public void ChangeStat()
     {
@@ -90,8 +100,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
             int statValue = 0;
             int.TryParse(StatValue, out statValue);
 
-            string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault(x => x.Value == (string?)SelectedPlayer).Key ?? "";
-
+            string playerID = GetSelectedPlayerID();
 
             if (statValue >= 1 && statValue <= 99 && !string.IsNullOrEmpty(playerID))
             {
@@ -110,6 +119,46 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
 
     }
+
+    [RelayCommand(CanExecute = nameof(CareerFileLoaded))]
+    public void ChangeStats()
+    {
+
+        if (!string.IsNullOrEmpty(SelectedStat) && CurrentPlayerStatsToValue.ContainsKey(SelectedStat))
+        {
+
+            int statValue = 0;
+            int.TryParse(StatValue, out statValue);
+            string playerID = GetSelectedPlayerID();
+
+
+            if (statValue >= 1 && statValue <= 99 && !string.IsNullOrEmpty(playerID))
+            {
+                SquadSaveFile?.SetPlayerStats(playerID, statValue);
+                OnSelectedPlayerChanged(SelectedPlayer);
+                PopUpMessage($"{SelectedPlayer}'s stats set to {statValue}");
+            }
+            else
+            {
+                PopUpMessage("Invalid stat value. Write a value between 1-99");
+            }
+
+
+
+        }
+
+    }
+
+    
+    [RelayCommand(CanExecute = nameof(CareerFileLoaded))]
+    public void ChangeAge()
+    {
+
+    }
+
+
+    private bool CareerFileLoaded() => CareerInfo is not null;
+
 
     private string OpenFile(string title)
     {
