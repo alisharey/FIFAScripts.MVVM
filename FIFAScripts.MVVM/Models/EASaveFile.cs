@@ -9,6 +9,7 @@ using System.Windows;
 
 using ClosedXML.Excel;
 
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2016.Excel;
 
 using FifaLibrary;
@@ -131,7 +132,8 @@ namespace FIFAScripts.MVVM.Models
 
         public void SetPlayerStat(string playerID, string statName, int value = 99)
         {
-            if(_playersTable?.Select($"playerid= {playerID}").First() is { } player)
+            
+            if (_playersTable?.Select($"playerid= {playerID}").First() is { } player)
             {
                 player[statName] = value;
             }                
@@ -152,6 +154,36 @@ namespace FIFAScripts.MVVM.Models
                     player[_stat] = value;
                 }
             }
+        }
+
+        public DataView? GetPlayersStatsDefaultView(Dictionary<string, string> PlayersIDstoNames)
+        {
+            string searchExpression = "playerid IN ('" + string.Join("','", PlayersIDstoNames.Keys) + "')";
+            var dt = _playersTable?.Select(searchExpression).CopyToDataTable();
+            
+
+            // remove columns which are not stats
+            var toRemove = dt?.Columns.Cast<DataColumn>().Select(x => x.ColumnName).Except(Util.PlayerStats).ToList();
+            toRemove?.Remove("playerid");
+
+            foreach (var col in toRemove ?? new List<string>())
+                dt?.Columns.Remove(col);
+
+            // add player names column
+            dt?.Columns.Add("playername", typeof(string)).SetOrdinal(0);
+            dt?.Columns["playerid"]?.SetOrdinal(1);
+            
+           
+            foreach (DataRow row in dt?.Rows)
+            {
+                string playerId = row["playerid"].ToString() ?? "";
+                
+                row["playername"] = PlayersIDstoNames[playerId];                
+            }
+            dt.Columns["playerid"].ReadOnly = true;
+            dt.Columns["playername"].ReadOnly = true;
+
+            return dt?.DefaultView;
         }
 
 

@@ -4,95 +4,133 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vms="clr-namespace:FIFAScripts.MVVM.ViewModels"
-        xmlns:local="clr-namespace:FIFAScripts.MVVM" 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:local="clr-namespace:FIFAScripts.MVVM"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:views="clr-namespace:FIFAScripts.MVVM.Views"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Style="{StaticResource MaterialDesignWindow}"
-        Title="Demo App" Height="584" Width="719"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Icon="Resources/Icon.png">
+        Title="Demo App"
+        Height="584"
+        Width="719"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Icon="Resources/Icon.png">
   <Grid x:Name="WindowGrid">
+    
+    <Grid.Resources>
+      <DataTemplate DataType="{x:Type vms:CareerViewModel}">
+        <views:CareerView />
+      </DataTemplate>
 
-    <Grid x:Name="MenuGrid" Height="60" VerticalAlignment="Top" Background="#FF25012B">
-      <Menu Foreground="#FFEDE9E9" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" OverridesDefaultStyle="True" Width="80">
-        <MenuItem  Width="78" VerticalAlignment="Center" Background="#FF25012B" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" OverridesDefaultStyle="False" HorizontalAlignment="Center" Height="49">
+      <DataTemplate DataType="{x:Type vms:SquadViewModel}">
+        <views:SquadView />
+      </DataTemplate>
+
+      <DataTemplate DataType="{x:Type vms:GitHubViewModel}">
+        <views:GitHubView />
+      </DataTemplate>
+    </Grid.Resources>
+
+
+    <Grid x:Name="MenuGrid"
+          Height="60"
+          VerticalAlignment="Top"
+          Background="#FF25012B">
+      <Menu Foreground="#FFEDE9E9"
+            HorizontalContentAlignment="Center"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            OverridesDefaultStyle="True"
+            Width="80">
+        <MenuItem  Width="78"
+                   VerticalAlignment="Center"
+                   Background="#FF25012B"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   OverridesDefaultStyle="False"
+                   HorizontalAlignment="Center"
+                   Height="49">
           <MenuItem.Header>
-            <TextBlock Text="File" Width="29" Margin="8,0,-14,0" FontFamily="Segoe UI" FontSize="15"/>
+            <TextBlock Text="File"
+                       Width="29"
+                       Margin="8,0,-14,0"
+                       FontFamily="Segoe UI"
+                       FontSize="15" />
           </MenuItem.Header>
-          <MenuItem x:Name="SaveButton"  Header="Save"                    
+          <MenuItem x:Name="SaveButton"
+                    Header="Save"
                     Icon="{materialDesign:PackIcon Kind=ContentSave}"
                     Command="{Binding SaveFileCommand}">
           </MenuItem>
-          <MenuItem x:Name="ExportButton"  Header="Export"
-                     Icon="{materialDesign:PackIcon Kind=Export}"
+          <MenuItem x:Name="ExportButton"
+                    Header="Export"
+                    Icon="{materialDesign:PackIcon Kind=Export}"
                     Command="{Binding ExportCommand}">
-                     
+
           </MenuItem>
         </MenuItem>
 
 
       </Menu>
-      <TextBlock Text="Fifa 23 Save File Scripts" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" FontFamily="Champagne &amp; Limousines" />
-      <Button x:Name="ShutDown" Command="{x:Static ApplicationCommands.Close}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" >
-        <materialDesign:PackIcon Kind="Power"/>
+      <TextBlock Text="Fifa 23 Save File Scripts"
+                 Foreground="White"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 FontSize="22"
+                 FontFamily="Champagne &amp; Limousines" />
+      <Button x:Name="ShutDown"
+              Command="{x:Static ApplicationCommands.Close}"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center"
+              Background="{x:Null}"
+              BorderBrush="{x:Null}">
+        <materialDesign:PackIcon Kind="Power" />
       </Button>
     </Grid>
 
-    <Grid x:Name="TabsGrid" Margin="0 60 0 0">
+    <Grid x:Name="TabsGrid"
+          Margin="0 60 0 0">
       <Grid.Resources>
-        
-        <DataTemplate DataType="{x:Type vms:CareerViewModel}">          
-          <views:CareerView/>
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type vms:SquadViewModel}">
-          <views:SquadView/>          
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type vms:GitHubViewModel}">
-          <views:GitHubView/>
-        </DataTemplate>
+
 
         <DataTemplate x:Key="NormalItemTemplate">
-          <TextBlock Text="{Binding Header}"/>
+          <TextBlock Text="{Binding Header}" />
         </DataTemplate>
 
-        <DataTemplate x:Key="GitHubItemTemplate" DataType="{x:Type vms:GitHubViewModel}">          
-              <materialDesign:PackIcon Kind="Github" 
-                                       Foreground="{DynamicResource PrimaryHueLightBrush}" 
-                                       Background="Transparent"/>      
+        <DataTemplate x:Key="GitHubItemTemplate"
+                      DataType="{x:Type vms:GitHubViewModel}">
+          <materialDesign:PackIcon Kind="Github"
+                                   Foreground="{DynamicResource PrimaryHueLightBrush}"
+                                   Background="Transparent" />
         </DataTemplate>
 
         <local:TabItemTemplateSelector x:Key="MyTabItemTemplateSelector"
-          Normal="{StaticResource NormalItemTemplate}"
-          Github="{StaticResource GitHubItemTemplate}"/>
+                                       Normal="{StaticResource NormalItemTemplate}"
+                                       Github="{StaticResource GitHubItemTemplate}" />
       </Grid.Resources>
-      
-      <TabControl 
-        materialDesign:ColorZoneAssist.Mode="PrimaryDark"
-        Style="{StaticResource MaterialDesignFilledTabControl}"              
-        BorderBrush="{StaticResource PrimaryHueDarkBrush}" 
-        HorizontalContentAlignment="Left" 
-        RenderTransformOrigin="0.435,0.554"
-        SelectedIndex="{Binding SelectedTabIndex}"        
-        ItemsSource="{Binding Tabs}" 
-        ItemTemplateSelector="{StaticResource MyTabItemTemplateSelector}"
-        >   
-        
-        
 
+      <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryDark"
+                  Style="{StaticResource MaterialDesignFilledTabControl}"
+                  BorderBrush="{StaticResource PrimaryHueDarkBrush}"
+                  HorizontalContentAlignment="Left"
+                  RenderTransformOrigin="0.435,0.554"
+                  SelectedIndex="{Binding SelectedTabIndex}"
+                  ItemsSource="{Binding Tabs}"
+                  ItemTemplateSelector="{StaticResource MyTabItemTemplateSelector}">
       </TabControl>
     </Grid>
 
-    <materialDesign:Snackbar      
-      Grid.Row="1"                           
-      Grid.ColumnSpan="2"
-      MessageQueue="{Binding MessageQueue}"
-      x:Name="StatusSnackBar"
-      HorizontalAlignment="Stretch" Background="#FF25012B" Foreground="#FFFFF5F5"                              
-      ActionButtonStyle="{DynamicResource MaterialDesignFlatLightButton}"  
-      ActionButtonPlacement="Inline"/>
+    <materialDesign:Snackbar Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             MessageQueue="{Binding MessageQueue}"
+                             x:Name="StatusSnackBar"
+                             HorizontalAlignment="Stretch"
+                             Background="#FF25012B"
+                             Foreground="#FFFFF5F5"
+                             ActionButtonStyle="{DynamicResource MaterialDesignFlatLightButton}"
+                             ActionButtonPlacement="Inline" />
 
   </Grid>
 </Window>

@@ -67,6 +67,7 @@ namespace FIFAScripts.MVVM.Models
                      "gkkicking",
                      "gkpositioning",
                      "gkreflexes",
+
         };
 
         public Util()

@@ -37,6 +37,8 @@ namespace FIFAScripts.MVVM.Views
             return reg.IsMatch(str);
 
         }
+
+        
     }
 
 
