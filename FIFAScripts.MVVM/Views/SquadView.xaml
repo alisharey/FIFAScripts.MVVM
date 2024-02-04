@@ -21,30 +21,6 @@
       <RowDefinition Height="*"></RowDefinition>
     </Grid.RowDefinitions>
 
-    <materialDesign:DialogHost IsOpen="{Binding Path=IsChecked, ElementName=ToggleButton}"
-                               CloseOnClickAway="True">
-      <materialDesign:DialogHost.DialogContent>
-
-        <DataGrid ItemsSource="{Binding PlayersStats, UpdateSourceTrigger=PropertyChanged, IsAsync=True}"
-                  RowHeight="35"
-                  ScrollViewer.CanContentScroll="False"
-                  ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                  Width="1000"
-                  Height="600">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="CellEditEnding">
-              <i:InvokeCommandAction Command="{Binding CellChangedCommand}"
-                                     PassEventArgsToCommand="True" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-        </DataGrid>
-      </materialDesign:DialogHost.DialogContent>
-
-    </materialDesign:DialogHost>
-
-
-
     <StackPanel>
 
       <StackPanel Orientation="Horizontal"
@@ -188,8 +164,7 @@
 
         <ToggleButton x:Name="ToggleButton"
                       Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
-                      ToolTip="Toggle to edit your entire team stats"
-                      IsChecked="{Binding IsGridShown}"
+                      ToolTip="Toggle to edit your entire team stats"                      
                       HorizontalAlignment="Right"
                       Background="DarkBlue"
                       Margin="30,0,0,0" />

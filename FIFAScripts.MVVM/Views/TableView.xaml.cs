@@ -18,9 +18,9 @@ namespace FIFAScripts.MVVM.Views
     /// <summary>
     /// Interaction logic for CareerView.xaml
     /// </summary>
-    public partial class CareerView : UserControl
+    public partial class TableView : UserControl
     {
-        public CareerView()
+        public TableView()
         {
             InitializeComponent();
         }

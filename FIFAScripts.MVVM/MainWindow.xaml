@@ -20,8 +20,8 @@
   <Grid x:Name="WindowGrid">
     
     <Grid.Resources>
-      <DataTemplate DataType="{x:Type vms:CareerViewModel}">
-        <views:CareerView />
+      <DataTemplate DataType="{x:Type vms:TableViewModel}">
+        <views:TableView />
       </DataTemplate>
 
       <DataTemplate DataType="{x:Type vms:SquadViewModel}">

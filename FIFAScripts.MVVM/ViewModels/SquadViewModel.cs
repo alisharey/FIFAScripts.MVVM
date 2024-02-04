@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using DocumentFormat.OpenXml.Math;
 
+
 using FIFAScripts.MVVM.Enums;
 using FIFAScripts.MVVM.Messages;
 using FIFAScripts.MVVM.Models;
@@ -23,7 +24,7 @@ using FIFAScripts.MVVM.Models;
 using Microsoft.Win32;
 namespace FIFAScripts.MVVM.ViewModels;
 
-public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMessage>, IRecipient<ExportMessage>
+public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMessage>, IRecipient<ExportMessage>, IRecipient<GridChangedMessage>
 {
 
 
@@ -33,11 +34,8 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ChangeStatsCommand))]
     [NotifyCanExecuteChangedFor(nameof(ChangeAgeCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ShowGridCommand))]
     private bool isFileLoaded;
 
-    [ObservableProperty]
-    private bool isGridShown = false;
 
     [ObservableProperty]
     private Dictionary<string, string> _currentPlayerStatsToValue = new();
@@ -90,17 +88,13 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
             }
             else return;
 
-            
+
             SquadSaveFile = new EASaveFile(OpenFile("Select a squad file"));
             if (SquadSaveFile?.Type != FileType.Squad) return;
 
 
             SquadSaveFile?.ImportDataSet(CareerInfo?.MainDataSet ?? new System.Data.DataSet());
-
-            if (CareerInfo is { })
-            {
-                PlayersStats = SquadSaveFile?.GetPlayersStatsDefaultView(CareerInfo.MyTeamPlayersIDtoName);
-            }
+            UpdatePlayerStats();
 
         });
 
@@ -133,6 +127,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
             {
                 SquadSaveFile?.SetPlayerStat(playerID, SelectedStat, statValue);
                 OnSelectedPlayerChanged(SelectedPlayer);
+                UpdatePlayerStats();
                 PopUpMessage($"{SelectedPlayer}'s {SelectedStat} set to {statValue}");
             }
             else
@@ -160,6 +155,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
             SquadSaveFile?.SetPlayerStats(playerID, statValue);
             OnSelectedPlayerChanged(SelectedPlayer);
+            UpdatePlayerStats();
             PopUpMessage($"{SelectedPlayer}'s stats set to {statValue}");
         }
         else
@@ -182,43 +178,27 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
             foreach (string id in PlayersIDs)
             {
                 SquadSaveFile?.SetPlayerStat(id, "birthdate", 154482);
-            }
 
+            }
+            UpdatePlayerStats();
             PopUpMessage($"Script done.");
         }
 
     }
 
-    [RelayCommand(CanExecute = nameof(SquadSaveFileLoaded))]
-    private void ShowGrid()
+    private void UpdatePlayerStats()
     {
-        Task.Run(() =>
+        if (CareerInfo is { })
         {
-            if (CareerInfo is { })
+            Task.Run(() =>
             {
                 PlayersStats = SquadSaveFile?.GetPlayersStatsDefaultView(CareerInfo.MyTeamPlayersIDtoName);
-            }
-
-        });
-        IsGridShown = true;
-
+                Messenger.Send(new PlayersTableMessage(PlayersStats));
+            });
+        }
     }
 
-    [RelayCommand]
-    public void CellChanged(DataGridCellEditEndingEventArgs e)
-    {
-        Task.Run(() =>
-        {
-            int value = 0;
-            int.TryParse(((TextBox)e.EditingElement).Text, out value);
-            string stat = e.Column.Header.ToString() ?? "";
-            string playerID = ((DataRowView)e.Row.Item).Row["playerid"].ToString() ?? "";
-            SquadSaveFile?.SetPlayerStat(playerID, stat, value);
 
-        });
-
-
-    }
 
     private bool SquadSaveFileLoaded() => IsFileLoaded;
     private bool CanExecuteChangeStats() => IsFileLoaded && SelectedPlayer is not null;
@@ -253,16 +233,15 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     partial void OnSelectedPlayerChanged(object? value)
     {
-
-        string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault
+        Task.Run(() =>
+        {
+            string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault
             (x => x.Value == (string?)value).Key ?? "";
 
-        CurrentPlayerStatsToValue = SquadSaveFile?.GetPlayerStats(playerID) ?? new Dictionary<string, string>();
+            CurrentPlayerStatsToValue = SquadSaveFile?.GetPlayerStats(playerID) ?? new Dictionary<string, string>();
 
-        UpdateStatValue();
-
-
-
+            UpdateStatValue();
+        });
     }
 
     partial void OnSelectedStatChanged(string? value)
@@ -288,5 +267,16 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     private void PopUpMessage(string message)
     {
         Messenger.Send(new PopUpMessage(message));
+    }
+
+    void IRecipient<GridChangedMessage>.Receive(GridChangedMessage message)
+    {
+        Task.Run(() =>
+        {
+            this.PlayersStats = message.PlayersStats;
+            SquadSaveFile?.SetPlayerStat(message.PlayerID, message.Stat, message.Value);
+            OnSelectedPlayerChanged(SelectedPlayer);
+        });
+
     }
 }

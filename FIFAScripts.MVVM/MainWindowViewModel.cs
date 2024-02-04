@@ -39,7 +39,7 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
     {       
 
         Tabs.Add(new SquadViewModel() { Header = "Squad" });
-        Tabs.Add(new CareerViewModel() { Header = "Career" });
+        Tabs.Add(new TableViewModel() { Header = "Table" });
         var gitHubVM = new GitHubViewModel() { Header = "Github" };
 
         Tabs.Add(gitHubVM);
