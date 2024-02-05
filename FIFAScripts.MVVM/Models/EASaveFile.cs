@@ -130,6 +130,7 @@ namespace FIFAScripts.MVVM.Models
 
         }
 
+
         public void SetPlayerStat(string playerID, string statName, int value = 99)
         {
             
@@ -170,18 +171,15 @@ namespace FIFAScripts.MVVM.Models
                 dt?.Columns.Remove(col);
 
             // add player names column
-            dt?.Columns.Add("playername", typeof(string)).SetOrdinal(0);
-            dt?.Columns["playerid"]?.SetOrdinal(1);
-            
+            dt?.Columns.Add("playername", typeof(string));
+             
            
             foreach (DataRow row in dt?.Rows)
             {
                 string playerId = row["playerid"].ToString() ?? "";
                 
                 row["playername"] = PlayersIDstoNames[playerId];                
-            }
-            dt.Columns["playerid"].ReadOnly = true;
-            dt.Columns["playername"].ReadOnly = true;
+            }            
 
             return dt?.DefaultView;
         }

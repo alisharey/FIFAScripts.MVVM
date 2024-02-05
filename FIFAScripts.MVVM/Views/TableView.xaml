@@ -1,28 +1,137 @@
 ﻿<UserControl x:Class="FIFAScripts.MVVM.Views.TableView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FIFAScripts.MVVM.Views"
              xmlns:vms="clr-namespace:FIFAScripts.MVVM.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d"             
+             mc:Ignorable="d"
              FontSize="35"
-             d:DesignHeight="450" d:DesignWidth="800"
-             >
+             d:Background="White"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
   <Grid>
     <DataGrid ItemsSource="{Binding PlayersStats, UpdateSourceTrigger=PropertyChanged, IsAsync=True}"
               RowHeight="35"
               ScrollViewer.CanContentScroll="False"
               ScrollViewer.HorizontalScrollBarVisibility="Visible"
-              ScrollViewer.VerticalScrollBarVisibility="Visible"
-              >
+              ScrollViewer.VerticalScrollBarVisibility="Visible"              
+              AutoGenerateColumns="False"
+              HorizontalContentAlignment="Center"
+              CellStyle="{StaticResource DataGridContentCellCentering}">
+      <DataGrid.Resources>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                         Color="White"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                         Color="Black" />
+      </DataGrid.Resources>
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="CellEditEnding">
           <i:InvokeCommandAction Command="{Binding CellChangedCommand}"
                                  PassEventArgsToCommand="True" />
         </i:EventTrigger>
       </i:Interaction.Triggers>
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Player Name"
+                            Binding="{Binding playername}"
+                            IsReadOnly="True" />
+        <DataGridTextColumn Header="Player ID"
+                            Binding="{Binding playerid}"
+                            IsReadOnly="True" />
+        
+        <!-- General -->
+        <DataGridTextColumn Header="Overall Rating"
+                            Binding="{Binding overallrating}"
+                            />
+        <DataGridTextColumn Header="Potential"
+                            Binding="{Binding potential}" />
+        <DataGridTextColumn Header="Birthdate"
+                            Binding="{Binding birthdate}" />
+
+        <!-- Pace -->
+        <DataGridTextColumn Header="Acceleration"
+                            Binding="{Binding acceleration}" />
+        <DataGridTextColumn Header="Sprint Speed"
+                            Binding="{Binding sprintspeed}" />
+
+        <!-- Shooting -->
+        <DataGridTextColumn Header="Positioning"
+                            Binding="{Binding positioning}" />
+        <DataGridTextColumn Header="Finishing"
+                            Binding="{Binding finishing}" />
+        <DataGridTextColumn Header="Shot Power"
+                            Binding="{Binding shotpower}" />
+        <DataGridTextColumn Header="Long Shots"
+                            Binding="{Binding longshots}" />
+        <DataGridTextColumn Header="Volleys"
+                            Binding="{Binding volleys}" />
+        <DataGridTextColumn Header="Penalties"
+                            Binding="{Binding penalties}" />
+
+        <!-- Passing -->
+        <DataGridTextColumn Header="Vision"
+                            Binding="{Binding vision}" />
+        <DataGridTextColumn Header="Crossing"
+                            Binding="{Binding crossing}" />
+        <DataGridTextColumn Header="Free Kick Accuracy"
+                            Binding="{Binding freekickaccuracy}" />
+        <DataGridTextColumn Header="Short Passing"
+                            Binding="{Binding shortpassing}" />
+        <DataGridTextColumn Header="Long Passing"
+                            Binding="{Binding longpassing}" />
+        <DataGridTextColumn Header="Curve"
+                            Binding="{Binding curve}" />
+
+        <!-- Dribbling -->
+        <DataGridTextColumn Header="Agility"
+                            Binding="{Binding agility}" />
+        <DataGridTextColumn Header="Balance"
+                            Binding="{Binding balance}" />
+        <DataGridTextColumn Header="Reactions"
+                            Binding="{Binding reactions}" />
+        <DataGridTextColumn Header="Ball Control"
+                            Binding="{Binding ballcontrol}" />
+        <DataGridTextColumn Header="Dribbling"
+                            Binding="{Binding dribbling}" />
+        <DataGridTextColumn Header="Composure"
+                            Binding="{Binding composure}" />
+
+        <!-- Defending -->
+        <DataGridTextColumn Header="Interceptions"
+                            Binding="{Binding interceptions}" />
+        <DataGridTextColumn Header="Defensive Awareness"
+                            Binding="{Binding defensiveawareness}" />
+        <DataGridTextColumn Header="Standing Tackle"
+                            Binding="{Binding standingtackle}" />
+        <DataGridTextColumn Header="Sliding Tackle"
+                            Binding="{Binding slidingtackle}" />
+        <DataGridTextColumn Header="Heading Accuracy"
+                            Binding="{Binding headingaccuracy}" />
+
+        <!-- Physicality -->
+        <DataGridTextColumn Header="Jumping"
+                            Binding="{Binding jumping}" />
+        <DataGridTextColumn Header="Stamina"
+                            Binding="{Binding stamina}" />
+        <DataGridTextColumn Header="Strength"
+                            Binding="{Binding strength}" />
+        <DataGridTextColumn Header="Aggression"
+                            Binding="{Binding aggression}" />
+
+        <!-- Goalkeeper (GK) -->
+        <DataGridTextColumn Header="GK Diving"
+                            Binding="{Binding gkdiving}" />
+        <DataGridTextColumn Header="GK Handling"
+                            Binding="{Binding gkhandling}" />
+        <DataGridTextColumn Header="GK Kicking"
+                            Binding="{Binding gkkicking}" />
+        <DataGridTextColumn Header="GK Positioning"
+                            Binding="{Binding gkpositioning}" />
+        <DataGridTextColumn Header="GK Reflexes"
+                            Binding="{Binding gkreflexes}" />
+
+      </DataGrid.Columns>
     </DataGrid>
   </Grid>
 </UserControl>

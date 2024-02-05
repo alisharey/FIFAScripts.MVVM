@@ -8,8 +8,8 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              FontFamily="Britannic Bold"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
+             d:Background="DarkGray"
+             d:Height="400">
 
 
   <Grid x:Name="Sqaud"
@@ -24,7 +24,7 @@
     <StackPanel>
 
       <StackPanel Orientation="Horizontal"
-                  Margin="15,50,12,15"
+                  Margin="15,30,12,15"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Top">
 
@@ -56,7 +56,7 @@
                          VerticalAlignment="Center"
                          Style="{StaticResource MaterialDesignBody2TextBlock}"
                          Text="All player's stats to value"
-                         Foreground="#FF25012B"
+                         Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                          Margin="10,0,0,0"
                          FontFamily="Britannic Bold" />
 
@@ -73,7 +73,7 @@
               <TextBlock HorizontalAlignment="Left"
                          VerticalAlignment="Center"
                          Style="{StaticResource MaterialDesignBody2TextBlock}"
-                         Foreground="#FF25012B"
+                         Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                          Margin="10,0,0,0"
                          FontFamily="Britannic Bold"
                          Text="User Team Age to 17" />
@@ -94,13 +94,14 @@
       </StackPanel>
       <StackPanel Orientation="Horizontal"
                   x:Name="Selection"
-                  Margin="15,25,15,0">
+                  Margin="0 30 0 0"
+                  HorizontalAlignment="Center">
 
         <TextBlock HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource MaterialDesignBody2TextBlock}"
                    Text="Edit player"
-                   Foreground="#FF25012B"
+                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                    Margin="40,10,0,0" />
 
         <ComboBox x:Name="playerComboBox"
@@ -110,14 +111,12 @@
                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                   materialDesign:TextFieldAssist.HasClearButton="True"
                   materialDesign:TextFieldAssist.SuffixText=""
-                  materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueDarkBrush}"
-                  materialDesign:ColorZoneAssist.Mode="Light"
                   materialDesign:HintAssist.Hint="Player"
                   materialDesign:HintAssist.HelperText="Select one Player"
                   MinWidth="128"
                   Margin="20,0,0,0"
-                  BorderBrush="#FF7B1FA2"
-                  Foreground="DarkBlue"
+                  BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
+                  Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                   Width="150"
                   HorizontalAlignment="Left" />
 
@@ -127,13 +126,11 @@
                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                   materialDesign:TextFieldAssist.HasClearButton="True"
                   materialDesign:TextFieldAssist.SuffixText=""
-                  materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource PrimaryHueDarkBrush}"
-                  materialDesign:ColorZoneAssist.Mode="Light"
                   materialDesign:HintAssist.Hint="Stat"
                   materialDesign:HintAssist.HelperText="Select one Stat"
                   MinWidth="128"
-                  BorderBrush="#FF7B1FA2"
-                  Foreground="DarkBlue"
+                  BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
+                  Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                   Width="150"
                   HorizontalAlignment="Left"
                   Margin="20,0,0,0" />
@@ -147,7 +144,7 @@
                  materialDesign:TextFieldAssist.HasOutlinedTextField="True"
                  materialDesign:TextFieldAssist.TextFieldCornerRadius="3"
                  HorizontalAlignment="Left"
-                 BorderBrush="#FF7B1FA2"
+                 BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
                  Width="100"
                  VerticalAlignment="Center"
                  Height="50"
@@ -164,9 +161,11 @@
 
         <ToggleButton x:Name="ToggleButton"
                       Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
-                      ToolTip="Toggle to edit your entire team stats"                      
+                      ToolTip="Toggle to edit your entire team stats"
                       HorizontalAlignment="Right"
-                      Background="DarkBlue"
+                      Background="{StaticResource PrimaryHueMidBrush}"
+                      Command="{Binding TestCommand}"
+                      CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}"
                       Margin="30,0,0,0" />
 
       </StackPanel>

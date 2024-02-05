@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FIFAScripts.MVVM.Views
 {
     /// <summary>
-    /// Interaction logic for TableView.xaml
+    /// Interaction logic for PositionalRatingsView.xaml
     /// </summary>
-    public partial class TableView : UserControl
+    public partial class PositionalRatingsView : UserControl
     {
-        public TableView()
+        public PositionalRatingsView()
         {
             InitializeComponent();
         }

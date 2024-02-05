@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
+using ClosedXML.Excel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -39,6 +41,9 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     [ObservableProperty]
     private Dictionary<string, string> _currentPlayerStatsToValue = new();
+
+    [ObservableProperty]
+    private DataTable _positionalRatings = new();
 
     [ObservableProperty]
     private List<string>? _stats = Util.PlayerStats;
@@ -73,7 +78,20 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     }
 
+    [RelayCommand]
+    private void Test(object state)
+    {        
+        if ((bool)state)
+        {
+            
+            Task.Run(() =>
+            {
+                
+            });
 
+
+        }
+    }
 
     [RelayCommand]
     private async Task ImportCareerToSquadAsync()
@@ -194,6 +212,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
             {
                 PlayersStats = SquadSaveFile?.GetPlayersStatsDefaultView(CareerInfo.MyTeamPlayersIDtoName);
                 Messenger.Send(new PlayersTableMessage(PlayersStats));
+                Messenger.Send(new UpdatePositionalRatingsMessage(CareerInfo?.MyTeamPlayersIDtoName, SquadSaveFile));
             });
         }
     }

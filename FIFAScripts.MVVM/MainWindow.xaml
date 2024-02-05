@@ -10,9 +10,11 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Style="{StaticResource MaterialDesignWindow}"
-        Title="Demo App"
-        Height="584"
-        Width="719"
+        Title="FIFA Scripts"
+        MinHeight="550"
+        MinWidth="710"
+        Height="550"
+        Width="760"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -31,13 +33,18 @@
       <DataTemplate DataType="{x:Type vms:GitHubViewModel}">
         <views:GitHubView />
       </DataTemplate>
+
+      <DataTemplate DataType="{x:Type vms:PositionalRatingsViewModel}">
+        <views:PositionalRatingsView />
+      </DataTemplate>
+
     </Grid.Resources>
 
 
     <Grid x:Name="MenuGrid"
           Height="60"
           VerticalAlignment="Top"
-          Background="#FF25012B">
+          Background="{StaticResource PrimaryHueMidBrush}">
       <Menu Foreground="#FFEDE9E9"
             HorizontalContentAlignment="Center"
             HorizontalAlignment="Left"
@@ -46,7 +53,7 @@
             Width="80">
         <MenuItem  Width="78"
                    VerticalAlignment="Center"
-                   Background="#FF25012B"
+                   Background="{StaticResource PrimaryHueMidBrush}"
                    HorizontalContentAlignment="Center"
                    VerticalContentAlignment="Center"
                    OverridesDefaultStyle="False"
@@ -69,7 +76,7 @@
                     Icon="{materialDesign:PackIcon Kind=Export}"
                     Command="{Binding ExportCommand}">
 
-          </MenuItem>
+          </MenuItem>          
         </MenuItem>
 
 
@@ -113,10 +120,10 @@
 
       <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryDark"
                   Style="{StaticResource MaterialDesignFilledTabControl}"
-                  BorderBrush="{StaticResource PrimaryHueDarkBrush}"
+                  BorderBrush="{StaticResource PrimaryHueMidBrush}"
                   HorizontalContentAlignment="Left"
                   RenderTransformOrigin="0.435,0.554"
-                  SelectedIndex="{Binding SelectedTabIndex}"
+                  SelectedIndex="{Binding SelectedTabIndex}"               
                   ItemsSource="{Binding Tabs}"
                   ItemTemplateSelector="{StaticResource MyTabItemTemplateSelector}">
       </TabControl>
@@ -127,7 +134,7 @@
                              MessageQueue="{Binding MessageQueue}"
                              x:Name="StatusSnackBar"
                              HorizontalAlignment="Stretch"
-                             Background="#FF25012B"
+                             Background="{StaticResource PrimaryHueDarkBrush}"
                              Foreground="#FFFFF5F5"
                              ActionButtonStyle="{DynamicResource MaterialDesignFlatLightButton}"
                              ActionButtonPlacement="Inline" />

@@ -28,7 +28,7 @@ public partial class TableViewModel : ObservableRecipient, IRecipient<PlayersTab
 
         int value = 99;
         int.TryParse(((TextBox)e.EditingElement).Text, out value);
-        string stat = e.Column.Header.ToString() ?? "";
+        string stat = e.Column.SortMemberPath.ToString() ?? "";
         string playerID = ((DataRowView)e.Row.Item).Row["playerid"].ToString() ?? "";
         
         Messenger.Send(new GridChangedMessage(PlayersStats, playerID, stat, value));

@@ -29,17 +29,21 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
     private int _selectedTabIndex;
 
     [ObservableProperty]
+    private TabItem? _selectedTabItem;
+
+    [ObservableProperty]
     private SnackbarMessageQueue _messageQueue = new();
-    
+
 
 
     public ObservableCollection<object> Tabs { get; } = new();
 
     public MainWindowViewModel()
-    {       
+    {
 
         Tabs.Add(new SquadViewModel() { Header = "Squad" });
         Tabs.Add(new TableViewModel() { Header = "Table" });
+        Tabs.Add(new PositionalRatingsViewModel() { Header = "Positional Ratings" });
         var gitHubVM = new GitHubViewModel() { Header = "Github" };
 
         Tabs.Add(gitHubVM);
@@ -49,20 +53,16 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
 
     }
 
-    partial void OnSelectedTabIndexChanging(int value)
+    partial void OnSelectedTabIndexChanged(int value)
     {
-        if (value == 2)
+        var sInfo = new System.Diagnostics.ProcessStartInfo(GitHubViewModel.GitHubLink)
         {
-            var sInfo = new System.Diagnostics.ProcessStartInfo(GitHubViewModel.GitHubLink)
-            {
-                UseShellExecute = true,
-            };
-            System.Diagnostics.Process.Start(sInfo);      
-
-
-
-        }
+            UseShellExecute = true,
+        };
+        //System.Diagnostics.Process.Start(sInfo);
     }
+    
+
 
     [RelayCommand]
     public async Task SaveFile()
@@ -75,6 +75,7 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
     {
         await Task.Run(() => Messenger.Send(new ExportMessage()));
     }
+
 
     void IRecipient<PopUpMessage>.Receive(PopUpMessage message)
     {

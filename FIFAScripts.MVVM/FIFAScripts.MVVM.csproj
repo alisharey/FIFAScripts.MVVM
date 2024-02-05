@@ -30,10 +30,13 @@
 
   <ItemGroup>
     <ApplicationDefinition Remove="App.xaml" />
+    <None Remove="Data\FIFA23PosCoefficents.xml" />
     <None Remove="Data\FifaControls.dll" />
     <None Remove="Data\FifaLibrary19.dll" />
     <None Remove="Data\fifa_ng_db-meta.XML" />
     <None Remove="Data\fifa_ng_db.DB" />
+    <None Remove="Data\PositionCalcValues.xlsx" />
+    <None Remove="Data\ValueSheets.xlsx" />
     <None Remove="Icon.png" />
     <Content Include="Data\FifaControls.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -45,6 +48,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\fifa_ng_db.DB">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\FIFA23PosCoefficents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Page Include="App.xaml" />
