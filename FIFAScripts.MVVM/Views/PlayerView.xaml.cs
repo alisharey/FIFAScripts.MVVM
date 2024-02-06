@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FIFAScripts.MVVM.Views
 {
     /// <summary>
-    /// Interaction logic for SquadView.xaml
+    /// Interaction logic for PlayerView.xaml
     /// </summary>
-    public partial class SquadView : UserControl
+    public partial class PlayerView : UserControl
     {
-        public SquadView()
+        public PlayerView()
         {
             InitializeComponent();
         }

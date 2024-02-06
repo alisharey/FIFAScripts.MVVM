@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
 using DocumentFormat.OpenXml.Math;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 
 using FIFAScripts.MVVM.Enums;
@@ -24,9 +25,12 @@ using FIFAScripts.MVVM.Models;
 
 
 using Microsoft.Win32;
+
+using NSwag.Collections;
+
 namespace FIFAScripts.MVVM.ViewModels;
 
-public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMessage>, IRecipient<ExportMessage>, IRecipient<GridChangedMessage>
+public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileMessage>, IRecipient<ExportMessage>, IRecipient<GridChangedMessage>, IRecipient<MigrateMessage>
 {
 
 
@@ -34,10 +38,9 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     private string? _header;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ChangeStatsCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ChangeAgeCommand))]
-    private bool isFileLoaded;
-
+    private OverallStats? _averages;
+    
+    private bool IsFileLoaded => SquadSaveFile is not null;
 
     [ObservableProperty]
     private Dictionary<string, string> _currentPlayerStatsToValue = new();
@@ -55,10 +58,7 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     private string? _selectedStat;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ChangeStatsCommand))]
     private object? _selectedPlayer;
-
-
 
     [ObservableProperty]
 
@@ -72,26 +72,13 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
 
 
-    public SquadViewModel()
+    public PlayerViewModel()
     {
         Messenger.RegisterAll(this);
 
     }
 
-    [RelayCommand]
-    private void Test(object state)
-    {        
-        if ((bool)state)
-        {
-            
-            Task.Run(() =>
-            {
-                
-            });
 
-
-        }
-    }
 
     [RelayCommand]
     private async Task ImportCareerToSquadAsync()
@@ -116,8 +103,6 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
         });
 
-
-        IsFileLoaded = SquadSaveFile is not null;
         PopUpMessage("Done.");
 
 
@@ -129,10 +114,11 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     }
 
+
     [RelayCommand]
     public void ChangeStat()
     {
-
+        if (!IsFileLoaded) return;
         if (!string.IsNullOrEmpty(SelectedStat) && CurrentPlayerStatsToValue.ContainsKey(SelectedStat))
         {
 
@@ -160,10 +146,10 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     }
 
-    [RelayCommand(CanExecute = nameof(CanExecuteChangeStats))]
+    //[RelayCommand]
     public void ChangeStats()
     {
-
+        if (!IsFileLoaded) return;
         int statValue = 0;
         int.TryParse(StatValue, out statValue);
         string playerID = GetSelectedPlayerID();
@@ -183,10 +169,10 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
     }
 
-    [RelayCommand(CanExecute = nameof(SquadSaveFileLoaded))]
+    //[RelayCommand]
     public void ChangeAge()
     {
-
+        if (!IsFileLoaded) return;
         if (CareerInfo?.MyTeamPlayersIDs is { } PlayersIDs)
         {
 
@@ -218,9 +204,6 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     }
 
 
-
-    private bool SquadSaveFileLoaded() => IsFileLoaded;
-    private bool CanExecuteChangeStats() => IsFileLoaded && SelectedPlayer is not null;
 
     private string OpenFile(string title)
     {
@@ -259,6 +242,12 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
 
             CurrentPlayerStatsToValue = SquadSaveFile?.GetPlayerStats(playerID) ?? new Dictionary<string, string>();
 
+            if(CurrentPlayerStatsToValue.Count > 0)
+            {
+                Averages = new OverallStats(CurrentPlayerStatsToValue);
+                
+            }
+
             UpdateStatValue();
         });
     }
@@ -267,6 +256,12 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
     {
         UpdateStatValue();
     }
+
+    partial void OnAveragesChanged(OverallStats? value)
+    {
+        Console.WriteLine();
+    }
+
 
 
 
@@ -294,8 +289,14 @@ public partial class SquadViewModel : ObservableRecipient, IRecipient<SaveFileMe
         {
             this.PlayersStats = message.PlayersStats;
             SquadSaveFile?.SetPlayerStat(message.PlayerID, message.Stat, message.Value);
+            Messenger.Send(new UpdatePositionalRatingsMessage(CareerInfo?.MyTeamPlayersIDtoName, SquadSaveFile));
             OnSelectedPlayerChanged(SelectedPlayer);
         });
 
+    }
+
+    async void IRecipient<MigrateMessage>.Receive(MigrateMessage message)
+    {
+        await ImportCareerToSquadAsync();
     }
 }

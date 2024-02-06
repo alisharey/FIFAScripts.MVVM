@@ -31,6 +31,7 @@
     <PackageVersion Include="Moq" Version="4.20.69" />
     <PackageVersion Include="Moq.AutoMock" Version="3.5.0" />
     <PackageVersion Include="MvvmDialogs" Version="9.1.2" />
+    <PackageVersion Include="NSwag.Core" Version="14.0.3" />
     <PackageVersion Include="SimpleModal.WPF" Version="1.0.0" />
     <PackageVersion Include="xunit" Version="2.6.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.4">

@@ -77,6 +77,8 @@ namespace FIFAScripts.MVVM.Models
 
         };
 
+       
+
         private static DataTable? PositionConverterTable { get; set; }
 
         public Util()
@@ -110,7 +112,7 @@ namespace FIFAScripts.MVVM.Models
         }
 
         public static DataTable? LoadSheetTable(string path)
-        {          
+        {
             var datatabel = new DataTable();
             DataSet dataSet = new DataSet();
             // Write dataset to xml file or stream            
@@ -181,11 +183,11 @@ namespace FIFAScripts.MVVM.Models
 
         public static DataTable? GetPositionalRatings(Dictionary<string, string>? myTeamPlayersIDtoName, EASaveFile? squadSaveFile)
         {
-            if(PositionConverterTable is null)
+            if (PositionConverterTable is null)
             {
                 PositionConverterTable = LoadSheetTable(@"Data\FIFA23PosCoefficents.xml");
             }
-           
+
             DataTable? positionalRatings = new();
             if (PositionConverterTable?.Rows is { } rows
                 && myTeamPlayersIDtoName is { })
@@ -195,7 +197,7 @@ namespace FIFAScripts.MVVM.Models
                 positionalRatings.Columns.Add("playername", typeof(string));
                 positionalRatings.Columns.Add("playerid", typeof(string));
                 positionalRatings.Columns.AddRange(columnNames.Select(name => new DataColumn(name, typeof(string))).ToArray());
-                
+
 
                 foreach (KeyValuePair<string, string> kvp in myTeamPlayersIDtoName)
                 {
@@ -227,7 +229,7 @@ namespace FIFAScripts.MVVM.Models
                 XLWorkbook wb = new XLWorkbook();
                 wb.Worksheets.Add(positionalRatings, "Positional Rating");
                 wb.SaveAs(@"Data\PositionalRatings.xlsx");
-               
+
             }
 
             return positionalRatings;

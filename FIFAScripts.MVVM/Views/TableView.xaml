@@ -19,6 +19,7 @@
               ScrollViewer.VerticalScrollBarVisibility="Visible"              
               AutoGenerateColumns="False"
               HorizontalContentAlignment="Center"
+              ColumnHeaderStyle="{StaticResource DataGridHeaderContentCentering}"
               CellStyle="{StaticResource DataGridContentCellCentering}">
       <DataGrid.Resources>
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"

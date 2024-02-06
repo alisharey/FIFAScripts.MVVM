@@ -1,0 +1,717 @@
+﻿<UserControl x:Class="FIFAScripts.MVVM.Views.PlayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:FIFAScripts.MVVM.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             FontFamily="Britannic Bold"
+             d:Background="DarkGray"
+             d:Height="1000"
+             d:Width="1100">
+
+
+  <Grid x:Name="Sqaud"
+        Margin="0,15,0,0"
+        materialDesign:ColorZoneAssist.Mode="PrimaryDark">
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="10*"></RowDefinition>
+      <RowDefinition Height="*"></RowDefinition>
+    </Grid.RowDefinitions>
+
+    <StackPanel>
+      <StackPanel Orientation="Horizontal"
+                  x:Name="Selection"
+                  Margin="0 0 0 0"
+                  HorizontalAlignment="Center">
+
+        <TextBlock HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource MaterialDesignBody2TextBlock}"
+                   Text="Edit player"
+                   Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                   Margin="40,10,0,0" />
+
+        <ComboBox x:Name="playerComboBox"
+                  Grid.Column="0"
+                  ItemsSource="{Binding CareerInfo.MyTeamPlayersIDtoName.Values}"
+                  SelectedValue="{Binding SelectedPlayer, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                  materialDesign:TextFieldAssist.HasClearButton="True"
+                  materialDesign:TextFieldAssist.SuffixText=""
+                  materialDesign:HintAssist.Hint="Player"
+                  materialDesign:HintAssist.HelperText="Select one Player"
+                  MinWidth="128"
+                  Margin="20,0,0,0"
+                  BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
+                  Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                  Width="150"
+                  HorizontalAlignment="Left" />
+
+        <ComboBox x:Name="StatsComboBox"
+                  ItemsSource="{Binding Stats}"
+                  SelectedItem="{Binding SelectedStat, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                  materialDesign:TextFieldAssist.HasClearButton="True"
+                  materialDesign:TextFieldAssist.SuffixText=""
+                  materialDesign:HintAssist.Hint="Stat"
+                  materialDesign:HintAssist.HelperText="Select one Stat"
+                  MinWidth="128"
+                  BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
+                  Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                  Width="150"
+                  HorizontalAlignment="Left"
+                  Margin="20,0,0,0" />
+
+        <TextBox x:Name="ValueTextBox"
+                 Text="{Binding StatValue, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="25,0,0,0"
+                 PreviewTextInput="NumericOnly"
+                 materialDesign:HintAssist.Hint="Value"
+                 materialDesign:TextFieldAssist.HasClearButton="True"
+                 materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+                 materialDesign:TextFieldAssist.TextFieldCornerRadius="3"
+                 HorizontalAlignment="Left"
+                 BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
+                 Width="100"
+                 VerticalAlignment="Center"
+                 Height="50"
+                 TextWrapping="Wrap"
+                 HorizontalContentAlignment="Center"
+                 VerticalContentAlignment="Center">
+          <TextBox.InputBindings>
+            <KeyBinding Key="Enter"
+                        Command="{Binding ChangeStatCommand}"
+                        CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}" />
+          </TextBox.InputBindings>
+
+        </TextBox>
+
+        <ToggleButton x:Name="ToggleButton"
+                      Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
+                      ToolTip="Toggle to edit your entire team stats"
+                      HorizontalAlignment="Right"
+                      Background="{StaticResource PrimaryHueMidBrush}"
+                      Margin="30,0,0,0" />
+
+      </StackPanel>
+      <StackPanel Orientation="Horizontal"
+                  Margin="15,30,12,15"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top">
+
+
+        <GroupBox x:Name="Pace"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="PACE"
+                  Margin="0,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.Pace,  UpdateSourceTrigger=PropertyChanged}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.Pace, UpdateSourceTrigger=PropertyChanged}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Acceleration"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[acceleration]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[acceleration]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Sprint Speed"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[sprintspeed]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[sprintspeed]}"
+                         Height="7" />
+
+
+          </StackPanel>
+
+        </GroupBox>
+        <GroupBox x:Name="Shooting"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="SHOOTING"
+                  Margin="30,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.Shooting}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.Shooting}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Positioning"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[positioning]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[positioning]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Finishing"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[finishing]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[finishing]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Shot Power"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[shotpower]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[shotpower]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Long Shots"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[longshots]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[longshots]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Volleys"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[volleys]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[volleys]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Penalties"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[penalties]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[penalties]}"
+                         Height="7" />
+
+          </StackPanel>
+
+        </GroupBox>
+        <GroupBox x:Name="Passing"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="PASSING"
+                  Margin="30,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.Passing}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.Passing}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Vision"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[vision]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[vision]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Crossing"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[crossing]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[crossing]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Free Kick Accuracy"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[freekickaccuracy]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[freekickaccuracy]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Short Passing"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[shortpassing]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[shortpassing]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Long Passing"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[longpassing]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[longpassing]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Curve"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[curve]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[curve]}"
+                         Height="7" />
+
+          </StackPanel>
+
+        </GroupBox>
+        <GroupBox x:Name="Dribbling"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="DRIBBLING"
+                  Margin="30,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.Dribbling}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.Dribbling}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Agility"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[agility]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[agility]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Balance"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[balance]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[balance]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Reactions"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[reactions]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[reactions]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Ball Control"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[ballcontrol]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[ballcontrol]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Dribbling"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[dribbling]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[dribbling]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Composure"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[composure]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[composure]}"
+                         Height="7" />
+
+          </StackPanel>
+
+        </GroupBox>
+
+
+
+      </StackPanel>
+      <StackPanel Orientation="Horizontal"
+                  Margin="15,0,0,15"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top">
+
+        <GroupBox x:Name="Defending"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="DEFENDING"
+                  Margin="0,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.Defending}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.Defending}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Interceptions"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[interceptions]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[interceptions]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Defensive Awareness"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[defensiveawareness]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[defensiveawareness]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Standing Tackle"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[standingtackle]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[standingtackle]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Sliding Tackle"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[slidingtackle]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[slidingtackle]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Heading Accuracy"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[headingaccuracy]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[headingaccuracy]}"
+                         Height="7" />
+
+
+
+          </StackPanel>
+
+        </GroupBox>
+        <GroupBox x:Name="Physicality"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="PHYSICALITY"
+                  Margin="30,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.Physicality}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.Physicality}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Jumping"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[jumping]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[jumping]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Stamina"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[stamina]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[stamina]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Strength"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[strength]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[strength]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Aggression"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[aggression]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[aggression]}"
+                         Height="7" />
+
+
+
+          </StackPanel>
+
+        </GroupBox>
+        <GroupBox x:Name="GK"
+                  Style="{StaticResource MaterialDesignGroupBox}"
+                  Header="GK"
+                  Margin="30,0,0,0"
+                  MinWidth="220">
+
+          <StackPanel>
+            <materialDesign:Card Padding="4">
+              <StackPanel>
+                <TextBlock Text="{Binding Averages.GK}"
+                           HorizontalAlignment="Center" />
+                <ProgressBar Maximum="100"
+                             Value="{Binding Averages.GK}"
+                             Height="10" />
+              </StackPanel>
+            </materialDesign:Card>
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Diving"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[gkdiving]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[gkdiving]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Handling"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[gkhandling]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[gkhandling]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Kicking"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[gkkicking]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[gkkicking]}"
+                         Height="7" />
+
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Positioning (Gk)"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[gkpositioning]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[gkpositioning]}"
+                         Height="7" />
+            <Grid Margin="0 8 0 0">
+              <TextBlock Text="Reflexes"
+                         HorizontalAlignment="Left">
+
+              </TextBlock>
+              <TextBox Text="{Binding CurrentPlayerStatsToValue[gkreflexes]}"
+                       PreviewTextInput="NumericOnly"
+                       HorizontalAlignment="Right" />
+            </Grid>
+            <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding CurrentPlayerStatsToValue[gkreflexes]}"
+                         Height="7" />
+
+
+
+          </StackPanel>
+
+        </GroupBox>
+
+      </StackPanel>
+
+
+
+
+    </StackPanel>
+
+  </Grid>
+
+
+
+</UserControl>

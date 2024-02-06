@@ -41,7 +41,7 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
     public MainWindowViewModel()
     {
 
-        Tabs.Add(new SquadViewModel() { Header = "Squad" });
+        Tabs.Add(new PlayerViewModel() { Header = "Player" });
         Tabs.Add(new TableViewModel() { Header = "Table" });
         Tabs.Add(new PositionalRatingsViewModel() { Header = "Positional Ratings" });
         var gitHubVM = new GitHubViewModel() { Header = "Github" };
@@ -61,8 +61,13 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
         };
         //System.Diagnostics.Process.Start(sInfo);
     }
-    
 
+    [RelayCommand]
+    public void MigrateCareerToSquad()
+    {
+        Messenger.Send(new MigrateMessage());
+
+    }
 
     [RelayCommand]
     public async Task SaveFile()

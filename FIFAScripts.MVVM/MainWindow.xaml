@@ -11,10 +11,10 @@
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Style="{StaticResource MaterialDesignWindow}"
         Title="FIFA Scripts"
-        MinHeight="550"
-        MinWidth="710"
-        Height="550"
-        Width="760"
+        MinHeight="700"
+        MinWidth="960"
+        Height="900"
+        Width="1100"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -26,8 +26,8 @@
         <views:TableView />
       </DataTemplate>
 
-      <DataTemplate DataType="{x:Type vms:SquadViewModel}">
-        <views:SquadView />
+      <DataTemplate DataType="{x:Type vms:PlayerViewModel}">
+        <views:PlayerView />
       </DataTemplate>
 
       <DataTemplate DataType="{x:Type vms:GitHubViewModel}">
@@ -66,6 +66,11 @@
                        FontFamily="Segoe UI"
                        FontSize="15" />
           </MenuItem.Header>
+          <MenuItem x:Name="MigrateButton"
+                    Header="Migrate Career to Squad"
+                    Icon="{materialDesign:PackIcon Kind=DatabaseImport}"
+                    Command="{Binding MigrateCareerToSquadCommand}">
+          </MenuItem>
           <MenuItem x:Name="SaveButton"
                     Header="Save"
                     Icon="{materialDesign:PackIcon Kind=ContentSave}"

@@ -14,10 +14,14 @@
   <Grid>
     <DataGrid ItemsSource="{Binding PositionalRatings, UpdateSourceTrigger=PropertyChanged, IsAsync=True}"
               RowHeight="35"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
               ScrollViewer.CanContentScroll="False"
               ScrollViewer.HorizontalScrollBarVisibility="Visible"
               ScrollViewer.VerticalScrollBarVisibility="Visible"              
-              HorizontalContentAlignment="Center"
+              HorizontalContentAlignment="Center"              
+              MinColumnWidth="70"
+              ColumnHeaderStyle="{StaticResource DataGridHeaderContentCentering}"
               CellStyle="{StaticResource DataGridContentCellCentering}"
               IsReadOnly="True">
       <DataGrid.Resources>
@@ -25,7 +29,9 @@
                          Color="White"/>
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                          Color="Black" />
-      </DataGrid.Resources>      
+        
+      </DataGrid.Resources>
+      
       
     </DataGrid>
   </Grid>
