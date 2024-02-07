@@ -12,10 +12,10 @@
         Style="{StaticResource MaterialDesignWindow}"
         Title="FIFA Scripts"
         MinHeight="700"
-        MinWidth="960"
-        Height="900"
+        MinWidth="900"
+        Height="1000"
         Width="1100"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Icon="Resources/Icon.png">
@@ -44,7 +44,7 @@
     <Grid x:Name="MenuGrid"
           Height="60"
           VerticalAlignment="Top"
-          Background="{StaticResource PrimaryHueMidBrush}">
+          Background="{StaticResource PrimaryHueDarkBrush}">
       <Menu Foreground="#FFEDE9E9"
             HorizontalContentAlignment="Center"
             HorizontalAlignment="Left"
@@ -53,7 +53,7 @@
             Width="80">
         <MenuItem  Width="78"
                    VerticalAlignment="Center"
-                   Background="{StaticResource PrimaryHueMidBrush}"
+                   Background="{StaticResource PrimaryHueDarkBrush}"
                    HorizontalContentAlignment="Center"
                    VerticalContentAlignment="Center"
                    OverridesDefaultStyle="False"
@@ -86,12 +86,12 @@
 
 
       </Menu>
-      <TextBlock Text="Fifa 23 Save File Scripts"
+      <TextBlock Text="FIFA23 SAVE FILE EDITOR"
                  Foreground="White"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center"
                  FontSize="22"
-                 FontFamily="Champagne &amp; Limousines" />
+                 FontWeight="ExtraBlack" />
       <Button x:Name="ShutDown"
               Command="{x:Static ApplicationCommands.Close}"
               HorizontalAlignment="Right"

@@ -60,10 +60,10 @@
     <PackageReference Include="ClosedXML" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Dragablz" />
+    <PackageReference Include="Extended.Wpf.Toolkit" />
     <PackageReference Include="MaterialDesignThemes" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
-    <PackageReference Include="NSwag.Core" />
   </ItemGroup>
 
   <ItemGroup>

@@ -193,10 +193,10 @@ namespace FIFAScripts.MVVM.Models
                 && myTeamPlayersIDtoName is { })
             {
                 var stats = rows[0].Table.Columns.Cast<DataColumn>().Select(c => c.ColumnName).Where(x => x != "position");
-                var columnNames = PositionConverterTable.AsEnumerable().Select(row => row.Field<string>("position")).ToList();
-                positionalRatings.Columns.Add("playername", typeof(string));
-                positionalRatings.Columns.Add("playerid", typeof(string));
-                positionalRatings.Columns.AddRange(columnNames.Select(name => new DataColumn(name, typeof(string))).ToArray());
+                var positions = PositionConverterTable.AsEnumerable().Select(row => row.Field<string>("position")).ToList();
+                positionalRatings.Columns.Add("Player Name", typeof(string));
+                positionalRatings.Columns.Add("best Pos", typeof(string));
+                positionalRatings.Columns.AddRange(positions.Select(name => new DataColumn(name, typeof(string))).ToArray());
 
 
                 foreach (KeyValuePair<string, string> kvp in myTeamPlayersIDtoName)
@@ -206,8 +206,7 @@ namespace FIFAScripts.MVVM.Models
                     var playersStats = squadSaveFile?.GetPlayerStats(playerid);
 
                     DataRow newRow = positionalRatings.NewRow();
-                    newRow["playername"] = playername;
-                    newRow["playerid"] = playerid;
+                    newRow["Player Name"] = playername;                    
                     foreach (DataRow posRow in rows)
                     {
                         string? Pos = posRow["position"].ToString();
@@ -223,12 +222,14 @@ namespace FIFAScripts.MVVM.Models
 
                     }
 
+                    var bestPosValue = newRow.ItemArray.Skip(2).Max();
+                    int bestPosIndex = newRow.ItemArray.Skip(2).ToList().IndexOf(bestPosValue);
+                    string bestPos = positions[bestPosIndex] ?? "";
+                    newRow["best Pos"] = bestPos;
                     positionalRatings.Rows.Add(newRow);
                 }
 
-                XLWorkbook wb = new XLWorkbook();
-                wb.Worksheets.Add(positionalRatings, "Positional Rating");
-                wb.SaveAs(@"Data\PositionalRatings.xlsx");
+                
 
             }
 

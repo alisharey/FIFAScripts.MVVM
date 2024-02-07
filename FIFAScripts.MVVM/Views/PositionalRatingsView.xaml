@@ -6,22 +6,21 @@
              xmlns:local="clr-namespace:FIFAScripts.MVVM.Views"
              xmlns:vms="clr-namespace:FIFAScripts.MVVM.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d"
-             FontSize="35"
+             mc:Ignorable="d"             
              d:Background="White"
              d:DesignHeight="450"
              d:DesignWidth="800">
   <Grid>
     <DataGrid ItemsSource="{Binding PositionalRatings, UpdateSourceTrigger=PropertyChanged, IsAsync=True}"
               RowHeight="35"
-              HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch"
+              MinColumnWidth="70"
               ScrollViewer.CanContentScroll="False"
               ScrollViewer.HorizontalScrollBarVisibility="Visible"
               ScrollViewer.VerticalScrollBarVisibility="Visible"              
               HorizontalContentAlignment="Center"              
-              MinColumnWidth="70"
+              FontSize="14"
               ColumnHeaderStyle="{StaticResource DataGridHeaderContentCentering}"
+              ColumnWidth="*"              
               CellStyle="{StaticResource DataGridContentCellCentering}"
               IsReadOnly="True">
       <DataGrid.Resources>

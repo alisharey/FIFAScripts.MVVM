@@ -12,7 +12,7 @@
           <ResourceDictionary.MergedDictionaries>
             <materialDesign:BundledTheme BaseTheme="Dark"
                                          PrimaryColor="BlueGrey"
-                                         SecondaryColor="Pink" />
+                                         SecondaryColor="DeepPurple" />
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.purple.xaml" />
           </ResourceDictionary.MergedDictionaries>
 
@@ -21,7 +21,7 @@
           <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush"
                            Color="{StaticResource Primary100Foreground}" />
           <SolidColorBrush x:Key="PrimaryHueMidBrush"
-                           Color="Black" />
+                           Color="LightGreen" />
           <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
                            Color="{StaticResource Primary500Foreground}" />
           <SolidColorBrush x:Key="PrimaryHueDarkBrush"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -23,15 +24,19 @@ using FIFAScripts.MVVM.Messages;
 using FIFAScripts.MVVM.Models;
 
 
-
 using Microsoft.Win32;
-
-using NSwag.Collections;
 
 namespace FIFAScripts.MVVM.ViewModels;
 
-public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileMessage>, IRecipient<ExportMessage>, IRecipient<GridChangedMessage>, IRecipient<MigrateMessage>
+public partial class PlayerViewModel : ObservableRecipient,
+    IRecipient<SaveFileMessage>,
+    IRecipient<ExportMessage>,
+    IRecipient<GridChangedMessage>,
+    IRecipient<MigrateMessage>
+    
 {
+    private bool UpdateCurrentPlayerStats { get; set; } = true;
+
 
 
     [ObservableProperty]
@@ -39,23 +44,23 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
 
     [ObservableProperty]
     private OverallStats? _averages;
-    
-    private bool IsFileLoaded => SquadSaveFile is not null;
+
+
+    [ObservableProperty]
+    private bool isFileLoaded = false;
+
+    [ObservableProperty]
+    private bool isLoading = false;
+
+    [ObservableProperty]
+    private string status = "No File Loaded";
 
     [ObservableProperty]
     private Dictionary<string, string> _currentPlayerStatsToValue = new();
 
-    [ObservableProperty]
-    private DataTable _positionalRatings = new();
 
     [ObservableProperty]
     private List<string>? _stats = Util.PlayerStats;
-
-    [ObservableProperty]
-    private string? _statValue;
-
-    [ObservableProperty]
-    private string? _selectedStat;
 
     [ObservableProperty]
     private object? _selectedPlayer;
@@ -78,11 +83,41 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
 
     }
 
+    [RelayCommand]
+    private async Task ApplyChangesAsync()
+    {
 
+        await Task.Run(() =>
+        {
+            if (GetSelectedPlayerID() is { Length: > 0 } playerID)
+            {
+                foreach (var kvp in CurrentPlayerStatsToValue)
+                {
+                    int value = 99;
+                    int.TryParse(kvp.Value, out value);
+                    if (value >= 0 && value <= 99)
+                    {
+                        SquadSaveFile?.SetPlayerStat(playerID, kvp.Key, value);
+
+
+                    }
+                }
+                UpdatePlayerStats();                
+
+            }
+        });
+
+
+
+
+
+    }
 
     [RelayCommand]
     private async Task ImportCareerToSquadAsync()
     {
+        IsLoading = true;
+        Status = "Loading....";
         await Task.Run(() =>
         {
 
@@ -91,22 +126,36 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
                 CareerInfo = Util.ExportCareerInfo(careerSaveFile);
 
             }
-            else return;
+            else
+            {
+                Status = "No File Loaded";
+                IsLoading = IsFileLoaded = false;
+                return;
+            }
 
 
             SquadSaveFile = new EASaveFile(OpenFile("Select a squad file"));
-            if (SquadSaveFile?.Type != FileType.Squad) return;
+            if (SquadSaveFile?.Type != FileType.Squad)
+            {
+                Status = "No File Loaded";
+                IsLoading = IsFileLoaded = false;
+                return;
+            }
 
 
             SquadSaveFile?.ImportDataSet(CareerInfo?.MainDataSet ?? new System.Data.DataSet());
             UpdatePlayerStats();
 
         });
-
+        IsLoading = false;
+        IsFileLoaded = SquadSaveFile is not null;
+        Status = "File Loaded";
         PopUpMessage("Done.");
 
 
     }
+
+
 
     private string GetSelectedPlayerID()
     {
@@ -114,60 +163,52 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
 
     }
 
+    private void IncDecOperation(int op, string group)
+    {
+        if (CurrentPlayerStatsToValue.Count == 0) return;
+        Task.Run(() =>
+        {
+            string playerID = GetSelectedPlayerID();
+            var stats = OverallStats.GroupedStats[group];
+            if (!string.IsNullOrEmpty(playerID))
+            {
+                foreach (var stat in stats)
+                {
+                    int value = int.Parse(CurrentPlayerStatsToValue[stat]) + op;
+                    if (value > 99) value = 99;
+                    if (value < 0) value = 0;
+                    CurrentPlayerStatsToValue[stat] = value.ToString();
+                }
+            }
+            UpdateAverages();
+
+            var temp = CurrentPlayerStatsToValue;
+            CurrentPlayerStatsToValue = new();
+            CurrentPlayerStatsToValue = temp;
+        });
+
+
+
+
+
+    }
 
     [RelayCommand]
-    public void ChangeStat()
+    private void IncrementButtonClick(string group)
     {
-        if (!IsFileLoaded) return;
-        if (!string.IsNullOrEmpty(SelectedStat) && CurrentPlayerStatsToValue.ContainsKey(SelectedStat))
-        {
-
-            int statValue = 0;
-            int.TryParse(StatValue, out statValue);
-
-            string playerID = GetSelectedPlayerID();
-
-            if (statValue >= 1 && statValue <= 99 && !string.IsNullOrEmpty(playerID))
-            {
-                SquadSaveFile?.SetPlayerStat(playerID, SelectedStat, statValue);
-                OnSelectedPlayerChanged(SelectedPlayer);
-                UpdatePlayerStats();
-                PopUpMessage($"{SelectedPlayer}'s {SelectedStat} set to {statValue}");
-            }
-            else
-            {
-                PopUpMessage("Invalid stat value. Write a value between 1-99");
-            }
-
-
-
-        }
-
-
+        IncDecOperation(1, group);
     }
 
-    //[RelayCommand]
-    public void ChangeStats()
+
+
+    [RelayCommand]
+    private void DecrementButtonClick(string group)
     {
-        if (!IsFileLoaded) return;
-        int statValue = 0;
-        int.TryParse(StatValue, out statValue);
-        string playerID = GetSelectedPlayerID();
-
-        if (statValue >= 1 && statValue <= 99 && !string.IsNullOrEmpty(playerID))
-        {
-
-            SquadSaveFile?.SetPlayerStats(playerID, statValue);
-            OnSelectedPlayerChanged(SelectedPlayer);
-            UpdatePlayerStats();
-            PopUpMessage($"{SelectedPlayer}'s stats set to {statValue}");
-        }
-        else
-        {
-            PopUpMessage("Invalid stat value. Write a value between 1-99");
-        }
-
+        IncDecOperation(-1, group);
     }
+
+
+
 
     //[RelayCommand]
     public void ChangeAge()
@@ -190,6 +231,8 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
 
     }
 
+
+
     private void UpdatePlayerStats()
     {
         if (CareerInfo is { })
@@ -200,6 +243,7 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
                 Messenger.Send(new PlayersTableMessage(PlayersStats));
                 Messenger.Send(new UpdatePositionalRatingsMessage(CareerInfo?.MyTeamPlayersIDtoName, SquadSaveFile));
             });
+
         }
     }
 
@@ -225,41 +269,21 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
 
     }
 
-    private void UpdateStatValue()
-    {
-        StatValue = !string.IsNullOrEmpty(SelectedStat) && CurrentPlayerStatsToValue.ContainsKey(SelectedStat)
-            ? CurrentPlayerStatsToValue[SelectedStat]
-            : "";
-
-    }
-
     partial void OnSelectedPlayerChanged(object? value)
     {
         Task.Run(() =>
         {
             string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault
-            (x => x.Value == (string?)value).Key ?? "";
+                  (x => x.Value == (string?)value).Key ?? "";
 
-            CurrentPlayerStatsToValue = SquadSaveFile?.GetPlayerStats(playerID) ?? new Dictionary<string, string>();
+            if (UpdateCurrentPlayerStats)
+                CurrentPlayerStatsToValue = SquadSaveFile?.GetPlayerStats(playerID)
+                ?? new Dictionary<string, string>();
 
-            if(CurrentPlayerStatsToValue.Count > 0)
-            {
-                Averages = new OverallStats(CurrentPlayerStatsToValue);
-                
-            }
-
-            UpdateStatValue();
+            UpdateAverages();
         });
-    }
 
-    partial void OnSelectedStatChanged(string? value)
-    {
-        UpdateStatValue();
-    }
 
-    partial void OnAveragesChanged(OverallStats? value)
-    {
-        Console.WriteLine();
     }
 
 
@@ -288,15 +312,25 @@ public partial class PlayerViewModel : ObservableRecipient, IRecipient<SaveFileM
         Task.Run(() =>
         {
             this.PlayersStats = message.PlayersStats;
-            SquadSaveFile?.SetPlayerStat(message.PlayerID, message.Stat, message.Value);
-            Messenger.Send(new UpdatePositionalRatingsMessage(CareerInfo?.MyTeamPlayersIDtoName, SquadSaveFile));
-            OnSelectedPlayerChanged(SelectedPlayer);
+            if (!string.IsNullOrEmpty(message.PlayerID))
+            {
+                SquadSaveFile?.SetPlayerStat(message.PlayerID, message.Stat, message.Value);
+                Messenger.Send(new UpdatePositionalRatingsMessage(CareerInfo?.MyTeamPlayersIDtoName, SquadSaveFile));
+                OnSelectedPlayerChanged(SelectedPlayer);
+            }
+
         });
 
     }
 
+
     async void IRecipient<MigrateMessage>.Receive(MigrateMessage message)
     {
         await ImportCareerToSquadAsync();
+    }
+
+    public void UpdateAverages()
+    {
+        Averages = !string.IsNullOrEmpty(GetSelectedPlayerID()) ? new OverallStats(CurrentPlayerStatsToValue) : null;
     }
 }

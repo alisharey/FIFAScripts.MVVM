@@ -16,14 +16,16 @@
               RowHeight="35"
               ScrollViewer.CanContentScroll="False"
               ScrollViewer.HorizontalScrollBarVisibility="Visible"
-              ScrollViewer.VerticalScrollBarVisibility="Visible"              
+              ScrollViewer.VerticalScrollBarVisibility="Visible"
               AutoGenerateColumns="False"
               HorizontalContentAlignment="Center"
               ColumnHeaderStyle="{StaticResource DataGridHeaderContentCentering}"
+              CanUserAddRows="False"
+              FontSize="14"
               CellStyle="{StaticResource DataGridContentCellCentering}">
       <DataGrid.Resources>
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                         Color="White"/>
+                         Color="White" />
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                          Color="Black" />
       </DataGrid.Resources>
@@ -40,11 +42,10 @@
         <DataGridTextColumn Header="Player ID"
                             Binding="{Binding playerid}"
                             IsReadOnly="True" />
-        
+
         <!-- General -->
         <DataGridTextColumn Header="Overall Rating"
-                            Binding="{Binding overallrating}"
-                            />
+                            Binding="{Binding overallrating}" />
         <DataGridTextColumn Header="Potential"
                             Binding="{Binding potential}" />
         <DataGridTextColumn Header="Birthdate"

@@ -16,8 +16,6 @@ using FifaLibrary;
 
 using FIFAScripts.MVVM.Enums;
 
-using NSwag.Collections;
-
 namespace FIFAScripts.MVVM.Models;
 
 public class EASaveFile
@@ -133,13 +131,24 @@ public class EASaveFile
     }
 
 
-    public void SetPlayerStat(string playerID, string statName, int value = 99)
+    public void SetPlayerStat(string playerID, string stat, int value = 99)
     {
         
         if (_playersTable?.Select($"playerid= {playerID}").First() is { } player)
         {
-            player[statName] = value;
+            player[stat] = value;
         }                
+    }
+
+    public void IncDecPlayerStat(string playerID, string stat, int op)
+    {
+        if (_playersTable?.Select($"playerid= {playerID}").First() is { } player)
+        {
+            int oldValue = int.Parse(player[stat].ToString() ?? "0");
+            int newValue = oldValue + op;
+            player[stat] = (newValue >= 0 && newValue <= 99) ? newValue : oldValue;
+            
+        }
     }
 
     public void SetPlayerStats(string playerID, int value = 99)
