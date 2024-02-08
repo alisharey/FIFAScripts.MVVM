@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:FIFAScripts.MVVM.Views"
              xmlns:vms="clr-namespace:FIFAScripts.MVVM.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d"             
+             xmlns:local1="clr-namespace:FIFAScripts.MVVM.Converters"
+             mc:Ignorable="d"
              d:Background="White"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -16,22 +17,30 @@
               MinColumnWidth="70"
               ScrollViewer.CanContentScroll="False"
               ScrollViewer.HorizontalScrollBarVisibility="Visible"
-              ScrollViewer.VerticalScrollBarVisibility="Visible"              
-              HorizontalContentAlignment="Center"              
+              ScrollViewer.VerticalScrollBarVisibility="Visible"
+              HorizontalContentAlignment="Center"
               FontSize="14"
               ColumnHeaderStyle="{StaticResource DataGridHeaderContentCentering}"
-              ColumnWidth="*"              
-              CellStyle="{StaticResource DataGridContentCellCentering}"
+              ColumnWidth="*"
               IsReadOnly="True">
       <DataGrid.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                         Color="White"/>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                         Color="Black" />
-        
+        <local1:ValueToColorConverter x:Key="colorconverter" />
+
+        <Style TargetType="{x:Type DataGridCell}">
+          <Setter Property="HorizontalAlignment"
+                  Value="Center" />
+          <Setter Property="VerticalAlignment"
+                  Value="Center" />
+          <Setter Property="Background"
+                  Value="{StaticResource MaterialDesignDarkBackground}" />
+          <Setter Property="BorderThickness"
+                  Value="0" />
+          
+        </Style>
+
       </DataGrid.Resources>
-      
-      
+
+
     </DataGrid>
   </Grid>
 </UserControl>

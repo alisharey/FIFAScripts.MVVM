@@ -3,27 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-
-using ClosedXML.Excel;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-
-using DocumentFormat.OpenXml.Math;
-using DocumentFormat.OpenXml.Wordprocessing;
-
-
 using FIFAScripts.MVVM.Enums;
 using FIFAScripts.MVVM.Messages;
 using FIFAScripts.MVVM.Models;
-
-
+using FIFAScripts.MVVM.Wrappers;
 using Microsoft.Win32;
 
 namespace FIFAScripts.MVVM.ViewModels;
@@ -32,8 +18,8 @@ public partial class PlayerViewModel : ObservableRecipient,
     IRecipient<SaveFileMessage>,
     IRecipient<ExportMessage>,
     IRecipient<GridChangedMessage>,
-    IRecipient<MigrateMessage>
-    
+    IRecipient<MigrateMessage>,
+    IRecipient<ForceUpdateStatsMessage>
 {
     private bool UpdateCurrentPlayerStats { get; set; } = true;
 
@@ -43,6 +29,7 @@ public partial class PlayerViewModel : ObservableRecipient,
     private string? _header;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentPlayerStatsToValue))]
     private OverallStats? _averages;
 
 
@@ -56,7 +43,7 @@ public partial class PlayerViewModel : ObservableRecipient,
     private string status = "No File Loaded";
 
     [ObservableProperty]
-    private Dictionary<string, string> _currentPlayerStatsToValue = new();
+    private CurrentPlayerStatsWrapper<string, string> _currentPlayerStatsToValue;
 
 
     [ObservableProperty]
@@ -80,6 +67,7 @@ public partial class PlayerViewModel : ObservableRecipient,
     public PlayerViewModel()
     {
         Messenger.RegisterAll(this);
+        CurrentPlayerStatsToValue = new(Messenger);
 
     }
 
@@ -102,14 +90,10 @@ public partial class PlayerViewModel : ObservableRecipient,
 
                     }
                 }
-                UpdatePlayerStats();                
+                UpdatePlayerStats();
 
             }
         });
-
-
-
-
 
     }
 
@@ -165,7 +149,7 @@ public partial class PlayerViewModel : ObservableRecipient,
 
     private void IncDecOperation(int op, string group)
     {
-        if (CurrentPlayerStatsToValue.Count == 0) return;
+        if (CurrentPlayerStatsToValue.ToList().Count == 0) return;
         Task.Run(() =>
         {
             string playerID = GetSelectedPlayerID();
@@ -177,14 +161,14 @@ public partial class PlayerViewModel : ObservableRecipient,
                     int value = int.Parse(CurrentPlayerStatsToValue[stat]) + op;
                     if (value > 99) value = 99;
                     if (value < 0) value = 0;
-                    CurrentPlayerStatsToValue[stat] = value.ToString();
+                    CurrentPlayerStatsToValue.AddOrUpdateStat(stat, value.ToString());
+
                 }
             }
+
             UpdateAverages();
 
-            var temp = CurrentPlayerStatsToValue;
-            CurrentPlayerStatsToValue = new();
-            CurrentPlayerStatsToValue = temp;
+
         });
 
 
@@ -192,6 +176,9 @@ public partial class PlayerViewModel : ObservableRecipient,
 
 
     }
+
+
+    
 
     [RelayCommand]
     private void IncrementButtonClick(string group)
@@ -276,11 +263,12 @@ public partial class PlayerViewModel : ObservableRecipient,
             string playerID = CareerInfo?.MyTeamPlayersIDtoName.FirstOrDefault
                   (x => x.Value == (string?)value).Key ?? "";
 
-            if (UpdateCurrentPlayerStats)
-                CurrentPlayerStatsToValue = SquadSaveFile?.GetPlayerStats(playerID)
-                ?? new Dictionary<string, string>();
-
+            if (UpdateCurrentPlayerStats && SquadSaveFile?.GetPlayerStats(playerID) is { } dict)
+            {
+                CurrentPlayerStatsToValue = new(Messenger, dict);
+            }
             UpdateAverages();
+
         });
 
 
@@ -331,6 +319,11 @@ public partial class PlayerViewModel : ObservableRecipient,
 
     public void UpdateAverages()
     {
-        Averages = !string.IsNullOrEmpty(GetSelectedPlayerID()) ? new OverallStats(CurrentPlayerStatsToValue) : null;
+        Averages = !string.IsNullOrEmpty(GetSelectedPlayerID()) ? new OverallStats(CurrentPlayerStatsToValue.GetPlayerStatsDict()) : null;
+    }
+
+    void IRecipient<ForceUpdateStatsMessage>.Receive(ForceUpdateStatsMessage message)
+    {
+        Task.Run(() => UpdateAverages());
     }
 }
