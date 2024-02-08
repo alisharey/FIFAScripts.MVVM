@@ -4,7 +4,8 @@ Mainly used to import your Career file's database to a sqaud file and play with 
 # How to use
 
 Click File -> Merge Career to squad.
-Select a Career file and then a target squad file.
+Select a Career file and then a target squad file. 
+
 Make and apply changes in the player or table(team) tabs.
 Save the squad file.
 
