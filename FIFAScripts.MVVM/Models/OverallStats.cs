@@ -106,7 +106,8 @@ public class OverallStats
             int sum = 0;            
             foreach(var stat in statGroup.Value)
             {
-                sum += int.Parse(playersStatToValue[stat]);
+                if(playersStatToValue[stat] is { Length: > 0 } value)
+                sum += int.Parse(value);
             }
 
             decimal temp = Math.Round((decimal)(sum / statGroup.Value.Count), 0);

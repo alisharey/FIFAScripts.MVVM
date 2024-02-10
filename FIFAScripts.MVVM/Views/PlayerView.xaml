@@ -121,6 +121,11 @@
       </Setter>
     </Style>
 
+    <Style TargetType="{x:Type TextBlock}">
+      <Setter Property="VerticalAlignment"
+              Value="Center" />
+    </Style>
+
     <Style TargetType="{x:Type GroupBox}"
            BasedOn="{StaticResource MaterialDesignGroupBox}">
 
@@ -326,11 +331,12 @@
                   <TextBox IsReadOnly="True"
                            Background="Transparent"
                            BorderThickness="0"
-                           IsEnabled="True" FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.Shooting}"
-                             HorizontalAlignment="Center" />
+                           IsEnabled="True"
+                           FontSize="15"
+                           FontWeight="ExtraBold"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.Shooting}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.Shooting}"
                                Height="10" />
@@ -462,11 +468,12 @@
                   <TextBox IsReadOnly="True"
                            Background="Transparent"
                            BorderThickness="0"
-                           IsEnabled="True" FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.Passing}"
-                             HorizontalAlignment="Center" />
+                           IsEnabled="True"
+                           FontSize="15"
+                           FontWeight="ExtraBold"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.Passing}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.Passing}"
                                Height="10" />
@@ -600,11 +607,12 @@
                   <TextBox IsReadOnly="True"
                            Background="Transparent"
                            BorderThickness="0"
-                           IsEnabled="True" FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.Dribbling}"
-                             HorizontalAlignment="Center" />
+                           IsEnabled="True"
+                           FontSize="15"
+                           FontWeight="ExtraBold"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.Dribbling}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.Dribbling}"
                                Height="10" />
@@ -747,11 +755,12 @@
                   <TextBox IsReadOnly="True"
                            Background="Transparent"
                            BorderThickness="0"
-                           IsEnabled="True" FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.Defending}"
-                             HorizontalAlignment="Center" />
+                           IsEnabled="True"
+                           FontSize="15"
+                           FontWeight="ExtraBold"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.Defending}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.Defending}"
                                Height="10" />
@@ -873,11 +882,12 @@
                   <TextBox IsReadOnly="True"
                            Background="Transparent"
                            BorderThickness="0"
-                           IsEnabled="True" FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.Physicality}"
-                             HorizontalAlignment="Center" />
+                           IsEnabled="True"
+                           FontSize="15"
+                           FontWeight="ExtraBold"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.Physicality}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.Physicality}"
                                Height="10" />
@@ -985,11 +995,12 @@
                   <TextBox IsReadOnly="True"
                            Background="Transparent"
                            BorderThickness="0"
-                           IsEnabled="True" FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.GK}"
-                             HorizontalAlignment="Center" />
+                           IsEnabled="True"
+                           FontSize="15"
+                           FontWeight="ExtraBold"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.GK}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.GK}"
                                Height="10" />

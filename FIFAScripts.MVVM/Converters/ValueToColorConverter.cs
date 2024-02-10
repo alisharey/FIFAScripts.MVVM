@@ -26,10 +26,10 @@ public class ValueToColorConverter : IValueConverter
                 return new SolidColorBrush(Colors.Green);
 
             else if (x > 50)
-                return new SolidColorBrush(Colors.YellowGreen);
+                return new SolidColorBrush(Colors.GreenYellow);
 
             else
-                return new SolidColorBrush(Colors.OrangeRed);
+                return new SolidColorBrush(Colors.Red);
         }
         
         else return new SolidColorBrush(Colors.White);
