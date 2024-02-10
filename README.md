@@ -1,3 +1,4 @@
+
 # FIFASCRIPT.MVVM.
 Mainly used to import your Career file's database to a sqaud file and play with it in kick off mode. 
 
@@ -16,15 +17,24 @@ Additionaly look at the positional ratings tab to know the estimated best positi
 # Screenshots 
 
 <p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/7263e810-0513-48c0-86f6-54b72ebe7415)" align="center" width="75%" Height="60%">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/105ae192-8784-4058-b8c3-bd42d9b153c7" align="center" width="75%" Height="60%">
 </p> 
 
-<p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/0cb8e97f-6b6a-44d2-a2a6-552a7e399015" align="center" width="70%" Height="60%">
-</p> 
 
 <p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/47cf935c-d647-4c3d-8bdd-504699db6899" align="center" width="70%" Height="60%">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/dcb21e1c-0fdb-4f96-a0ed-c8d417e7a10f" align="center" width="75%" Height="60%">
+</p> 
+
+
+
+<p align="center">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/d5e9a3d9-4768-411c-ba51-429933906835" align="center" width="70%" Height="60%">
+</p> 
+
+
+
+<p align="center">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/4fbed6cf-87e7-4c2c-8481-a7b5a6862b9f" align="center" width="70%" Height="60%">
 </p>
 
 
