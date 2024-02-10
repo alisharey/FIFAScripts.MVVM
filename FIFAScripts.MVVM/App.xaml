@@ -12,21 +12,22 @@
           <!-- include your primary palette -->
           <ResourceDictionary.MergedDictionaries>
             <materialDesign:BundledTheme BaseTheme="Dark"
-                                         PrimaryColor="Red"
-                                         SecondaryColor="Red" />
-            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.purple.xaml" />
+                                         PrimaryColor="Brown"
+                                         SecondaryColor="Red"
+                                         ColorAdjustment="{materialDesign:ColorAdjustment}"/>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Brown.xaml" />
           </ResourceDictionary.MergedDictionaries>
 
           <SolidColorBrush x:Key="PrimaryHueLightBrush"
-                           Color="White" />
+                           Color="{StaticResource Primary100}" />
           <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush"
                            Color="{StaticResource Primary100Foreground}" />
           <SolidColorBrush x:Key="PrimaryHueMidBrush"
-                           Color="LightGreen" />
+                           Color="{StaticResource Primary500}" />
           <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
                            Color="{StaticResource Primary500Foreground}" />
           <SolidColorBrush x:Key="PrimaryHueDarkBrush"
-                           Color="Black" />
+                           Color="{StaticResource Primary700}" />
           <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush"
                            Color="{StaticResource Primary700Foreground}" />
         </ResourceDictionary>
@@ -35,14 +36,14 @@
         <ResourceDictionary>
           <!-- include your secondary pallette -->
           <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.purple.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Brown.xaml" />
           </ResourceDictionary.MergedDictionaries>
 
           <!-- include a single secondary accent color (and the associated forecolour) -->
           <SolidColorBrush x:Key="SecondaryAccentBrush"
-                           Color="{StaticResource Accent200}" />
+                           Color="{StaticResource Primary200}" />
           <SolidColorBrush x:Key="SecondaryAccentForegroundBrush"
-                           Color="{StaticResource Accent200Foreground}" />
+                           Color="{StaticResource Primary200Foreground}" />
         </ResourceDictionary>
 
         <!-- Include the Dragablz Material Design style -->

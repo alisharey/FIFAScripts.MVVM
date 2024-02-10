@@ -19,15 +19,12 @@
   <UserControl.Resources>
     <local1:ValueToColorConverter x:Key="colorconverter" />
 
+
     <Style TargetType="{x:Type xctk:IntegerUpDown}">
       <Style.Resources>
         <SolidColorBrush x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type themes:ResourceKeys}, ResourceId=GlyphNormalForegroundKey}"
-                         Color="White" />
+                         Color="{DynamicResource Primary500}" />
       </Style.Resources>
-      <Setter Property="Background"
-              Value="Transparent" />
-      <Setter Property="BorderBrush"
-              Value="Transparent" />
       <Setter Property="Foreground">
         <Setter.Value>
           <Binding Path="Text"
@@ -47,8 +44,11 @@
               Value="0 0 0 5" />
       <Setter Property="Width"
               Value="60" />
+      <Setter Property="Background"
+              Value="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
 
-
+      <Setter Property="BorderBrush"
+              Value="Transparent" />
       <Style.Triggers>
         <Trigger Property="IsMouseOver"
                  Value="True">
@@ -63,11 +63,14 @@
                   Value="Transparent" />
         </Trigger>
       </Style.Triggers>
+
+
     </Style>
 
     <Style TargetType="{x:Type xctk:WatermarkTextBox}">
       <Setter Property="CaretBrush"
-              Value="White" />
+              Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+
 
     </Style>
 
@@ -76,7 +79,7 @@
       <Setter Property="Background"
               Value="Transparent" />
       <Setter Property="BorderBrush"
-              Value="{StaticResource PrimaryHueLightBrush}" />
+              Value="Transparent" />
       <Setter Property="BorderThickness"
               Value="0.75" />
       <Setter Property="Padding"
@@ -90,23 +93,12 @@
           <Setter Property="Background"
                   Value="{StaticResource PrimaryHueDarkBrush}" />
 
-
         </Trigger>
 
       </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type TextBlock}">
-      <Setter Property="VerticalAlignment"
-              Value="Center" />
-      <Setter Property="Foreground">
-        <Setter.Value>
-          <Binding Path="Text"
-                   RelativeSource="{RelativeSource Self}"
-                   Converter="{StaticResource colorconverter}" />
-        </Setter.Value>
-      </Setter>
-    </Style>
+
 
     <Style TargetType="{x:Type ProgressBar}">
       <Setter Property="Foreground">
@@ -116,8 +108,7 @@
                    Converter="{StaticResource colorconverter}" />
         </Setter.Value>
       </Setter>
-      <Setter Property="Background"
-              Value="{StaticResource MaterialDesignDarkBackground}" />
+
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
@@ -132,8 +123,7 @@
 
     <Style TargetType="{x:Type GroupBox}"
            BasedOn="{StaticResource MaterialDesignGroupBox}">
-      <Setter Property="Background"
-              Value="{StaticResource MaterialDesignDarkSeparatorBackground}" />
+
 
       <Setter Property="Margin"
               Value="30,0,0,0" />
@@ -147,6 +137,8 @@
 
 
     </Style>
+
+
 
 
   </UserControl.Resources>
@@ -170,7 +162,6 @@
                      VerticalAlignment="Center"
                      Style="{StaticResource MaterialDesignBody2TextBlock}"
                      Text="Choose a player"
-                     Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                      Margin="40,10,0,0" />
 
           <ComboBox x:Name="playerComboBox"
@@ -182,66 +173,23 @@
                     materialDesign:TextFieldAssist.SuffixText=""
                     materialDesign:HintAssist.Hint="Player"
                     materialDesign:HintAssist.HelperText="Select one Player"
-                    materialDesign:HintAssist.Foreground="{StaticResource MaterialDesignDarkForeground}"
                     MinWidth="128"
                     Margin="20,0,0,0"
-                    materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource MaterialDesignDarkForeground}"
-                    BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}"
-                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                     Width="150"
                     HorizontalAlignment="Left" />
 
 
 
-          <Button Margin="30 0 0 0"
+          <Button Margin="30 10 0 0"
+                  Style="{DynamicResource MaterialDesignFlatDarkBgButton}"
                   materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsLoading}"
                   materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
                   materialDesign:ButtonProgressAssist.Value="-1"
                   materialDesign:RippleAssist.IsDisabled="True"
-                  materialDesign:ButtonAssist.CornerRadius="5"
-                  BorderThickness="2"
-                  Content="{Binding Status}"
-                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                  BorderThickness="1"
+                  Content="{Binding Status}">
 
 
-            <Button.Style>
-              <Style TargetType="{x:Type Button}"
-                     BasedOn="{StaticResource MaterialDesignFlatDarkBgButton}">
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding Status}"
-                               Value="No File Loaded">
-                    <Setter Property="Background"
-                            Value="{StaticResource MaterialDesignDarkBackground}" />
-                    <Setter Property="Foreground"
-                            Value="DarkGray" />
-                    <Setter Property="BorderBrush"
-                            Value="DarkGray" />
-
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}"
-                               Value="Loading....">
-                    <Setter Property="Background"
-                            Value="PaleVioletRed" />
-                    <Setter Property="Foreground"
-                            Value="{StaticResource PrimaryHueLightBrush}" />
-                    <Setter Property="BorderBrush"
-                            Value="PaleVioletRed" />
-
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}"
-                               Value="File Loaded">
-                    <Setter Property="Background"
-                            Value="{StaticResource MaterialDesignLightSeparatorBackground}" />
-                    <Setter Property="Foreground"
-                            Value="{StaticResource PrimaryHueMidBrush}" />
-                    <Setter Property="BorderBrush"
-                            Value="{StaticResource PrimaryHueMidBrush}" />
-
-                  </DataTrigger>
-                </Style.Triggers>
-              </Style>
-
-            </Button.Style>
           </Button>
 
         </StackPanel>
@@ -265,22 +213,22 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,
                                            RelativeSource={RelativeSource 
                                            Mode=FindAncestor,
                                            AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -293,11 +241,15 @@
 
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
-                             FontWeight="ExtraBold"
-                             Margin="0 0 0 2"
-                             Text="{Binding Averages.Pace,  UpdateSourceTrigger=PropertyChanged}"
-                             HorizontalAlignment="Center" />
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True"
+                           FontWeight="ExtraBold"
+                           FontSize="15"
+                           Margin="0 0 0 2"
+                           Text="{Binding Averages.Pace,  UpdateSourceTrigger=PropertyChanged}"
+                           HorizontalAlignment="Center" />
                   <ProgressBar Maximum="100"
                                Value="{Binding Averages.Pace, UpdateSourceTrigger=PropertyChanged}"
                                Height="10" />
@@ -348,19 +300,19 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -371,7 +323,10 @@
             <StackPanel>
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True" FontSize="15"
                              FontWeight="ExtraBold"
                              Margin="0 0 0 2"
                              Text="{Binding Averages.Shooting}"
@@ -479,19 +434,19 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -504,7 +459,10 @@
             <StackPanel>
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True" FontSize="15"
                              FontWeight="ExtraBold"
                              Margin="0 0 0 2"
                              Text="{Binding Averages.Passing}"
@@ -616,19 +574,19 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -639,7 +597,10 @@
             <StackPanel>
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True" FontSize="15"
                              FontWeight="ExtraBold"
                              Margin="0 0 0 2"
                              Text="{Binding Averages.Dribbling}"
@@ -760,19 +721,19 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -783,7 +744,10 @@
             <StackPanel>
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True" FontSize="15"
                              FontWeight="ExtraBold"
                              Margin="0 0 0 2"
                              Text="{Binding Averages.Defending}"
@@ -883,19 +847,19 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -906,7 +870,10 @@
             <StackPanel>
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True" FontSize="15"
                              FontWeight="ExtraBold"
                              Margin="0 0 0 2"
                              Text="{Binding Averages.Physicality}"
@@ -992,19 +959,19 @@
                               HorizontalAlignment="Right">
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.IncrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Plus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Plus" />
                     </Button>
                     <Button materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                             Style="{StaticResource MaterialDesignToolWindowButtonStyle}"
-                            Background="{StaticResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Command="{Binding DataContext.DecrementButtonClickCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=GroupBox}}"
                             CommandParameter="{Binding Name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=GroupBox}}">
-                      <materialDesign:PackIcon Kind="Minus"
-                                               Foreground="White" />
+                      <materialDesign:PackIcon Kind="Minus" />
                     </Button>
 
 
@@ -1015,7 +982,10 @@
             <StackPanel>
               <materialDesign:Card Padding="4">
                 <StackPanel>
-                  <TextBlock FontSize="15"
+                  <TextBox IsReadOnly="True"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           IsEnabled="True" FontSize="15"
                              FontWeight="ExtraBold"
                              Margin="0 0 0 2"
                              Text="{Binding Averages.GK}"
@@ -1110,7 +1080,7 @@
       </StackPanel>
       <Button HorizontalAlignment="Right"
               VerticalAlignment="Top"
-              Margin="0 5 60 0"
+              Margin="0 8 60 0"
               Content="APPLY CHANGES"
               Style="{StaticResource MaterialDesignRaisedDarkButton}"
               ToolTip="Apply changes"

@@ -20,7 +20,7 @@
         WindowStyle="None"
         Icon="Resources/Icon.png">
   <Grid x:Name="WindowGrid">
-    
+
     <Grid.Resources>
       <DataTemplate DataType="{x:Type vms:TableViewModel}">
         <views:TableView />
@@ -44,16 +44,14 @@
     <Grid x:Name="MenuGrid"
           Height="60"
           VerticalAlignment="Top"
-          Background="{StaticResource PrimaryHueDarkBrush}">
-      <Menu Foreground="#FFEDE9E9"
-            HorizontalContentAlignment="Center"
+          Background="{StaticResource PrimaryHueMidBrush}">
+      <Menu HorizontalContentAlignment="Center"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             OverridesDefaultStyle="True"
             Width="80">
         <MenuItem  Width="78"
                    VerticalAlignment="Center"
-                   Background="{StaticResource PrimaryHueDarkBrush}"
                    HorizontalContentAlignment="Center"
                    VerticalContentAlignment="Center"
                    OverridesDefaultStyle="False"
@@ -81,22 +79,23 @@
                     Icon="{materialDesign:PackIcon Kind=Export}"
                     Command="{Binding ExportCommand}">
 
-          </MenuItem>          
+          </MenuItem>
         </MenuItem>
 
 
       </Menu>
       <TextBlock Text="FIFA23 SAVE FILE EDITOR"
-                 Foreground="White"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center"
                  FontSize="22"
                  FontWeight="ExtraBlack" />
+
       <Button x:Name="ShutDown"
               Command="{x:Static ApplicationCommands.Close}"
               HorizontalAlignment="Right"
               VerticalAlignment="Center"
               Background="{x:Null}"
+              Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
               BorderBrush="{x:Null}">
         <materialDesign:PackIcon Kind="Power" />
       </Button>
@@ -128,10 +127,22 @@
                   BorderBrush="{StaticResource PrimaryHueMidBrush}"
                   HorizontalContentAlignment="Left"
                   RenderTransformOrigin="0.435,0.554"
-                  SelectedIndex="{Binding SelectedTabIndex}"               
+                  SelectedIndex="{Binding SelectedTabIndex}"
                   ItemsSource="{Binding Tabs}"
                   ItemTemplateSelector="{StaticResource MyTabItemTemplateSelector}">
       </TabControl>
+      <ToggleButton HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                    IsChecked="{Binding IsDarkTheme, Delay=250}"
+                    Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                    Margin="0 15 10 0">
+        <materialDesign:PackIcon Kind="WhiteBalanceSunny" />
+        <materialDesign:ToggleButtonAssist.OnContent>
+          <materialDesign:PackIcon Kind="MoonWaningCrescent" />
+        </materialDesign:ToggleButtonAssist.OnContent>
+
+      </ToggleButton>
     </Grid>
 
     <materialDesign:Snackbar Grid.Row="1"
@@ -139,8 +150,8 @@
                              MessageQueue="{Binding MessageQueue}"
                              x:Name="StatusSnackBar"
                              HorizontalAlignment="Stretch"
-                             Background="{StaticResource PrimaryHueDarkBrush}"
-                             Foreground="#FFFFF5F5"
+                             VerticalContentAlignment="Center"
+                             Background="{DynamicResource PrimaryHueDarkBrush}"
                              ActionButtonStyle="{DynamicResource MaterialDesignFlatLightButton}"
                              ActionButtonPlacement="Inline" />
 

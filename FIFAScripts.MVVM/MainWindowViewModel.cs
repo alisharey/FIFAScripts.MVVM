@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Policy;
@@ -9,8 +10,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
-using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Office2016.Excel;
 
 using FIFAScripts.MVVM.Enums;
 using FIFAScripts.MVVM.Messages;
@@ -34,12 +33,29 @@ public partial class MainWindowViewModel : ObservableRecipient, IRecipient<PopUp
     [ObservableProperty]
     private SnackbarMessageQueue _messageQueue = new();
 
+    [ObservableProperty]
+    private bool _isDarkTheme;
+
+    partial void OnIsDarkThemeChanged(bool value)
+    {
+        var helper = new PaletteHelper();
+        var theme = helper.GetTheme();
+
+        theme.SetBaseTheme(value ? Theme.Dark : Theme.Light);
+        helper.SetTheme(theme);
+
+       
+    }
 
 
     public ObservableCollection<object> Tabs { get; } = new();
 
     public MainWindowViewModel()
     {
+        PaletteHelper palette = new();
+        ITheme theme = palette.GetTheme();
+        var currentTheme = theme.GetBaseTheme();
+        IsDarkTheme = currentTheme == BaseTheme.Dark;
 
         Tabs.Add(new PlayerViewModel() { Header = "Player" });
         Tabs.Add(new TableViewModel() { Header = "Table" });
