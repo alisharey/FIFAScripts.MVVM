@@ -17,24 +17,24 @@ Additionaly look at the positional ratings tab to know the estimated best positi
 # Screenshots 
 
 <p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/105ae192-8784-4058-b8c3-bd42d9b153c7" align="center" width="75%" Height="60%">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/105ae192-8784-4058-b8c3-bd42d9b153c7" align="center" >
 </p> 
 
 
 <p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/dcb21e1c-0fdb-4f96-a0ed-c8d417e7a10f" align="center" width="75%" Height="60%">
-</p> 
-
-
-
-<p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/d5e9a3d9-4768-411c-ba51-429933906835" align="center" width="70%" Height="60%">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/dcb21e1c-0fdb-4f96-a0ed-c8d417e7a10f" align="center">
 </p> 
 
 
 
 <p align="center">
-  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/4fbed6cf-87e7-4c2c-8481-a7b5a6862b9f" align="center" width="70%" Height="60%">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/d5e9a3d9-4768-411c-ba51-429933906835" align="center" >
+</p> 
+
+
+
+<p align="center">
+  <img src="https://github.com/alisharey/FIFAScripts.MVVM/assets/109942483/4fbed6cf-87e7-4c2c-8481-a7b5a6862b9f" align="center" >
 </p>
 
 
